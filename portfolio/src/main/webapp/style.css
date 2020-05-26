@@ -7,3 +7,15 @@
 #greeting-container {
   margin-top: 20px;
 }
+
+.img-thumbnails {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.img-thumbnails img {
+  margin: 10px;
+  max-height: 200px;
+  max-width: 200px;
+}
