@@ -4,8 +4,13 @@
   width: 650px;
 }
 
-#greeting-container {
+#fact-container {
   margin-top: 20px;
+}
+
+#img-container {
+    margin-top: 20px;
+    max-height: 100px;
 }
 
 .img-thumbnails {
