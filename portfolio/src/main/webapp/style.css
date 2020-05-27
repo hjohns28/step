@@ -42,37 +42,40 @@
     opacity: 0.5;
 }
 
+.planet-imgs img:hover + .vegan {
+    opacity: 1;
+}
+
+.planet-imgs img:hover + .clothes {
+    opacity: 1;
+}
+
+.planet-imgs img:hover + .plastic {
+    opacity: 1;
+}
+
 .vegan {
     position: absolute;
-    left: 110px;
-    top: 300px;
+    left: 65px;
+    top: 290px;
     opacity: 0;
+    max-width: 200px;
 }
 
 .clothes {
     position: absolute;
-    left: 350px;
-    top: 300px;
+    left: 330px;
+    top: 260px;
     opacity: 0;
+    max-width: 200px;
 }
 
 .plastic {
     position: absolute;
-    left: 600px;
-    top: 300px;
-    opacity: 0px;
-}
-
-.vegan:hover {
-    opacity: 1;
-}
-
-.clothes:hover {
-    opacity: 1;
-}
-
-.plastic:hover {
-    opacity: 1;
+    left: 560px;
+    top: 255px;
+    opacity: 0;
+    max-width: 200px;
 }
 
 .link:hover {
