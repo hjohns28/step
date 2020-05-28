@@ -17,7 +17,8 @@
  */
 function addRandomFact() {
   const facts = [
-    {text: 'I can juggle', imageSrc: 'images/juggling.png'}, {text: 'I know how to unicycle', imageSrc: 'images/unicycle.png'}, 
+    {text: 'I can juggle', imageSrc: 'images/juggling.png'}, 
+    {text: 'I know how to unicycle', imageSrc: 'images/unicycle.png'}, 
     {text: 'I did the triple jump in high school', imageSrc: 'images/triplejump.png'}, 
     {text: 'My major is Civil Engineering', imageSrc: 'images/civil.png'}];
 
