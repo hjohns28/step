@@ -89,34 +89,6 @@
     padding: 10px;
 }
 
-nav {
-  float: left;
-  width: 10%;
-  height: 100%;
-  background: #ADD8E6;
-}
-
-/* Style the list inside the menu */
-nav ul {
-  list-style-type: none;
-  padding: 10px;
-}
-
-article {
-  float: left;
-  width: 90%;
-  height: 100%;
-  background-color: #F0F8FF;
-  padding: 20px;
-}
-
-/* Clear floats after the columns */
-section:after {
-  content: "";
-  display: table;
-  clear: both;
-}
-
 footer, h1 {
   background-color: #ADD8E6;
   height: 10%;
@@ -135,9 +107,27 @@ html, body, section {
 
 section {
     padding: 10px;
+    text-align: center;
+    background-color: #F0F8FF;
 }
+
 .aboutmepage {
     padding: 20px;
     padding-left: 100px;
     padding-right: 100px;
+}
+
+#sunshine {
+    opacity: 0.3;
+    width: 350px;
+    margin: 20px;
+    margin-bottom: 80px;
+}
+
+.logo {
+    vertical-align: top;
+}
+
+.links {
+    display: block;
 }
