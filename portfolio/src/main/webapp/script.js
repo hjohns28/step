@@ -20,7 +20,7 @@ function addRandomFact() {
       ['I can juggle', 'My arms are double-jointed', 'I did the triple jump in high school', 'My major is Civil Engineering',
       'I love! thai food', 'I go to Loyola Marymount University'];
 
-  var imgs = new Array ("images/juggling.png", "images/arms.jpg", "images/triplejump.png", "images/civil.png", "images/thai.png", "images/lmu.png");
+  var imgs = new Array ("images/juggling.png", "images/arms.jpg", "images/triplejump2.png", "images/civil.png", "images/thai.png", "images/lmu.png");
 
   // Pick a random fact.
   const index = Math.floor(Math.random() * facts.length);
