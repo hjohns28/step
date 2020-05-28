@@ -9,13 +9,21 @@
 }
 
 .img-thumbnails {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
+    display: grid;
+    grid-template-columns: 200px 200px 200px 200px;
+    grid-gap: 10px;
 }
 
 .img-thumbnails img {
   margin: 10px;
   max-height: 200px;
   max-width: 200px;
+}
+
+.img-thumbnails img:hover {
+    opacity: 0.5;
+}
+
+.link:hover {
+    font-weight: bold;
 }
