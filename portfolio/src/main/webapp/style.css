@@ -14,16 +14,16 @@
 }
 
 #img-container {
-    margin-top: 20px;
-    max-height: 250px;
-    max-width: 350px;
+  margin-top: 20px;
+  max-height: 250px;
+  max-width: 350px;
 }
 
 .img-thumbnails {
-    display: grid;
-    grid-template-columns: 200px 200px 200px 200px;
-    grid-gap: 10px;
-    justify-content: center;
+  display: grid;
+  grid-template-columns: 200px 200px 200px 200px;
+  grid-gap: 10px;
+  justify-content: center;
 }
 
 .img-thumbnails img {
@@ -33,60 +33,60 @@
 }
 
 .img-thumbnails img:hover {
-    opacity: 0.5;
+  opacity: 0.5;
 }
 
 .planet-imgs img {
-    max-height: 300px;
-    max-width: 300px;
+  max-height: 300px;
+  max-width: 300px;
 }
 
 .planet-imgs img:hover {
-    opacity: 0.5;
+  opacity: 0.5;
 }
 
 .planet-imgs img:hover + .vegan {
-    opacity: 1;
+  opacity: 1;
 }
 
 .planet-imgs img:hover + .clothes {
-    opacity: 1;
+  opacity: 1;
 }
 
 .planet-imgs img:hover + .plastic {
-    opacity: 1;
+  opacity: 1;
 }
 
 .vegan {
-    position: absolute;
-    left: 430px;
-    top: 470px;
-    opacity: 0;
-    max-width: 200px;
+  position: absolute;
+  left: 430px;
+  top: 470px;
+  opacity: 0;
+  max-width: 200px;
 }
 
 .clothes {
-    position: absolute;
-    left: 690px;
-    top: 470px;
-    opacity: 0;
-    max-width: 200px;
+  position: absolute;
+  left: 690px;
+  top: 470px;
+  opacity: 0;
+  max-width: 200px;
 }
 
 .plastic {
-    position: absolute;
-    left: 930px;
-    top: 470px;
-    opacity: 0;
-    max-width: 200px;
+  position: absolute;
+  left: 930px;
+  top: 470px;
+  opacity: 0;
+  max-width: 200px;
 }
 
 .link:hover {
-    font-weight: bold;
+  font-weight: bold;
 }
 
 .link {
-    padding: 10px;
+  padding: 10px;
 }
 
 footer, h1 {
@@ -100,34 +100,46 @@ footer, h1 {
 }
 
 html, body, section {
-    height: 100%;
-    margin: 0px;
-    text-align: center;
+  height: 100%;
+  margin: 0px;
+  text-align: center;
 }
 
 section {
-    padding: 10px;
-    text-align: center;
-    background-color: #F0F8FF;
+  padding: 10px;
+  text-align: center;
+  background-color: #F0F8FF;
 }
 
 .aboutmepage {
-    padding: 20px;
-    padding-left: 100px;
-    padding-right: 100px;
+  padding: 20px;
+  padding-left: 100px;
+  padding-right: 100px;
 }
 
-#sunshine {
-    opacity: 0.3;
-    width: 350px;
-    margin: 20px;
-    margin-bottom: 80px;
+#heidi {
+  width: 350px;
+  margin: 20px;
+  margin-bottom: 60px;
 }
 
-.logo {
-    vertical-align: top;
+.info {
+  vertical-align: top;
 }
 
 .links {
-    display: block;
+  display: block;
+}
+
+.logo {
+  max-height: 30px;
+}
+
+.logo:hover {
+  transform: scale(1.3);
+}
+
+#email {
+  max-width: 100px;
+  display: inline-block;
 }
