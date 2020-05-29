@@ -16,16 +16,19 @@
  * Adds a random fact to the page.
  */
 function addRandomFact() {
-  const facts =
-    ['I can juggle', 'My arms are double-jointed', 'I did the triple jump in high school', 'My major is Civil Engineering',
-    'I love! thai food', 'I go to Loyola Marymount University'];
-
-  var imgs = new Array ("images/juggling.png", "images/arms.jpg", "images/triplejump2.png", "images/civil.png", "images/thai.png", "images/lmu.png");
+  const facts = [
+    {text: 'I can juggle', imageSrc: 'images/juggling.png'}, 
+    {text: 'My arms are double-jointed', imageSrc: 'images/arms.jpg'}, 
+    {text: 'I did the triple jump in high school', imageSrc: 'images/triplejump2.png'}, 
+    {text: 'My major is Civil Engineering', imageSrc: 'images/civil.png'},
+    {text: 'I love! thai food', imageSrc: 'images/thai.png'},
+    {text: 'I go to Loyola Marymount University', imageSrc: 'images/lmu.png'}
+    ];
 
   // Pick a random fact.
   const index = Math.floor(Math.random() * facts.length);
-  const fact = facts[index];
-  const image = imgs[index];
+  const fact = facts[index].text;
+  const image = imgs[index].imageSrc;
   
 
   // Add it to the page.
