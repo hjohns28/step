@@ -147,3 +147,23 @@ section {
   max-width: 100px;
   display: inline-block;
 }
+
+#exp-container {
+  border-style: solid;
+  width: 350px;
+  height: 130px;
+  display: inline-block;
+  vertical-align: middle;
+  padding-top: 50px;
+  margin-right: 30px;
+  margin-left: 30px;
+}
+
+.scroll {
+  padding: 200px;
+  border-style: solid;
+  width: 950px;
+  height: 500px;
+  display: inline-block;
+  margin-top: 50px;
+}

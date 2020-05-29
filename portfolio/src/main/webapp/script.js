@@ -34,3 +34,53 @@ function addRandomFact() {
 
   document.getElementById('img-container').src = image;
 }
+
+function nextExperience() {
+  const expContainer = document.getElementById('exp-container');
+  const exps = [
+    {title: 'WORK EXPERIENCE:', dets: ''}, 
+    {title: 'STEP INTERN AT GOOGLE', dets: 'May 2020-Present'}, 
+    {title: 'RESEARCH ASSISTANT AT LMU', dets: 'Sep 2019-Mar 2019'},
+    {title: 'SUMMER INTERN AT ELECTRO SCAN INC.', dets: 'Jun 2018-Aug 2018'},
+    {title: 'SUMMER LIFEGUARD AT YMCA', dets: 'May 2017-Jun 2017'},
+    {title: 'EDUCATION:', dets: ''},
+    {title: 'LOYOLA MARYMOUNT UNIVERSITY', dets: ' Pursuing Civil Engineering, Computer Science'},
+    {title: 'SACRAMENTO COUNTRY DAY SCHOOL', dets: 'High School Diploma (2019)'}
+  ]
+  for(i = 0; i < exps.length; i++) {
+    if (expContainer.innerHTML.substring(3,12).localeCompare(exps[i].title.substring(0,9)) == 0) {
+      if (i < exps.length-1) {
+        expContainer.innerHTML = exps[i+1].title.bold() + "<br />" + exps[i+1].dets;
+        break;
+      } else {
+        expContainer.innerHTML = exps[0].title.bold() + "<br />" + exps[0].dets;
+        break;
+      }
+    }
+  }
+}
+
+function lastExperience() {
+  const expContainer = document.getElementById('exp-container');
+  const exps = [
+    {title: 'WORK EXPERIENCE:', dets: ''}, 
+    {title: 'STEP INTERN AT GOOGLE', dets: 'May 2020-Present'}, 
+    {title: 'RESEARCH ASSISTANT AT LMU', dets: 'Sep 2019-Mar 2019'},
+    {title: 'SUMMER INTERN AT ELECTRO SCAN INC.', dets: 'Jun 2018-Aug 2018'},
+    {title: 'SUMMER LIFEGUARD AT YMCA', dets: 'May 2017-Jun 2017'},
+    {title: 'EDUCATION:', dets: ''},
+    {title: 'LOYOLA MARYMOUNT UNIVERSITY', dets: ' Pursuing Civil Engineering, Computer Science'},
+    {title: 'SACRAMENTO COUNTRY DAY SCHOOL', dets: 'High School Diploma (2019)'}
+  ]
+  for(i = 0; i < exps.length; i++) {
+    if (expContainer.innerHTML.substring(3,12).localeCompare(exps[i].title.substring(0,9)) == 0) {
+      if (i != 0) {
+        expContainer.innerHTML = exps[i-1].title.bold() + "<br />" + exps[i-1].dets;
+        break;
+      } else {
+        expContainer.innerHTML = exps[exps.length-1].title.bold() + "<br />" + exps[exps.length-1].dets;
+        break;
+      }
+    }
+  }
+}
