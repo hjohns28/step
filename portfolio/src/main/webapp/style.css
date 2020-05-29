@@ -33,6 +33,48 @@
     opacity: 0.5;
 }
 
+.planet-imgs img {
+    max-height: 300px;
+    max-width: 300px;
+}
+
+.planet-imgs img:hover {
+    opacity: 0.5;
+}
+
+.vegan {
+    position: absolute;
+    left: 110px;
+    top: 300px;
+    opacity: 0;
+}
+
+.clothes {
+    position: absolute;
+    left: 350px;
+    top: 300px;
+    opacity: 0;
+}
+
+.plastic {
+    position: absolute;
+    left: 600px;
+    top: 300px;
+    opacity: 0;
+}
+
+.vegan:hover {
+    opacity: 1;
+}
+
+.clothes:hover {
+    opacity: 1;
+}
+
+.plastic:hover {
+    opacity: 1;
+}
+
 .link:hover {
     font-weight: bold;
 }
