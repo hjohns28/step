@@ -35,6 +35,7 @@ function addRandomFact() {
   document.getElementById('img-container').src = image;
 }
 
+// "scroll" to next experience
 function nextExperience() {
   const expContainer = document.getElementById('exp-container');
   const exps = [
@@ -47,6 +48,7 @@ function nextExperience() {
     {title: 'LOYOLA MARYMOUNT UNIVERSITY', dets: ' Pursuing Civil Engineering, Computer Science'},
     {title: 'SACRAMENTO COUNTRY DAY SCHOOL', dets: 'High School Diploma (2019)'}
   ]
+  // find which is the current experience, and display the next
   for(i = 0; i < exps.length; i++) {
     if (expContainer.innerHTML.substring(3,12).localeCompare(exps[i].title.substring(0,9)) == 0) {
       if (i < exps.length-1) {
@@ -60,6 +62,7 @@ function nextExperience() {
   }
 }
 
+// same as above, but scroll backwards 
 function lastExperience() {
   const expContainer = document.getElementById('exp-container');
   const exps = [
