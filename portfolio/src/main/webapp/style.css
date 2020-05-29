@@ -72,10 +72,22 @@
 
 .plastic {
     position: absolute;
-    left: 560px;
-    top: 255px;
-    opacity: 0;
     max-width: 200px;
+    left: 600px;
+    top: 300px;
+    opacity: 0;
+}
+
+.vegan:hover {
+    opacity: 1;
+}
+
+.clothes:hover {
+    opacity: 1;
+}
+
+.plastic:hover {
+    opacity: 1;
 }
 
 .link:hover {
