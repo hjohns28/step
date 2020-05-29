@@ -1,7 +1,11 @@
+* {
+  box-sizing: border-box;
+}
+
 #content {
   margin-left: auto;
   margin-right: auto;
-  width: 650px;
+  height: 80%;
 }
 
 #fact-container {
@@ -31,4 +35,47 @@
 
 .link:hover {
     font-weight: bold;
+}
+
+nav {
+  float: left;
+  width: 10%;
+  height: 100%;
+  background: #ADD8E6;
+}
+
+/* Style the list inside the menu */
+nav ul {
+  list-style-type: none;
+  padding: 10px;
+}
+
+article {
+  float: left;
+  width: 90%;
+  height: 100%;
+  background-color: #F0F8FF;
+  padding: 20px;
+}
+
+/* Clear floats after the columns */
+section:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+footer, h1 {
+  background-color: #ADD8E6;
+  height: 10%;
+  text-align: center;
+  justify-content: center;
+  color: black;
+  margin: 0px;
+  padding: 10px;
+}
+
+html, body, section {
+    height: 100%;
+    margin: 0px;
 }
