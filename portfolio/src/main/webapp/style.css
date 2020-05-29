@@ -81,6 +81,18 @@
   max-width: 200px;
 }
 
+.vegan:hover {
+    opacity: 1;
+}
+
+.clothes:hover {
+    opacity: 1;
+}
+
+.plastic:hover {
+    opacity: 1;
+}
+
 .link:hover {
   font-weight: bold;
 }
