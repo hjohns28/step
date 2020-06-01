@@ -48,7 +48,11 @@ function nextExperience() {
     {title: 'SACRAMENTO COUNTRY DAY SCHOOL', dets: 'High School Diploma (2019)'}
   ]
   for(i = 0; i < exps.length; i++) {
-    if (expContainer.innerHTML.substring(3,12).localeCompare(exps[i].title.substring(0,9)) == 0) {
+    //see which experience slide is currently displayed, and display the succeeding one
+    //substring used so that bold tags, <b>, not included in comparing the strings
+    const pureCurrentTextString = expContainer.innerHTML.substring(3,12);
+    const correspondingTitleString = exps[i].title.substring(0,9);
+    if (pureCurrentTextString.localeCompare(correspondingTitleString) == 0) {
       if (i < exps.length-1) {
         expContainer.innerHTML = exps[i+1].title.bold() + "<br />" + exps[i+1].dets;
         break;
@@ -60,7 +64,7 @@ function nextExperience() {
   }
 }
 
-function lastExperience() {
+function previousExperience() {
   const expContainer = document.getElementById('exp-container');
   const exps = [
     {title: 'WORK EXPERIENCE:', dets: ''}, 
@@ -73,7 +77,11 @@ function lastExperience() {
     {title: 'SACRAMENTO COUNTRY DAY SCHOOL', dets: 'High School Diploma (2019)'}
   ]
   for(i = 0; i < exps.length; i++) {
-    if (expContainer.innerHTML.substring(3,12).localeCompare(exps[i].title.substring(0,9)) == 0) {
+    //see which experience slide is currently displayed, and display the previous one
+    //substring used so that bold tags, <b>, not included in comparing the strings
+    const pureCurrentTextString = expContainer.innerHTML.substring(3,12);
+    const correspondingTitleString = exps[i].title.substring(0,9);
+    if (pureCurrentTextString.localeCompare(correspondingTitleString) == 0) {
       if (i != 0) {
         expContainer.innerHTML = exps[i-1].title.bold() + "<br />" + exps[i-1].dets;
         break;
