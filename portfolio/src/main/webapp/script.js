@@ -16,16 +16,19 @@
  * Adds a random fact to the page.
  */
 function addRandomFact() {
-  const facts =
-    ['I can juggle', 'My arms are double-jointed', 'I did the triple jump in high school', 'My major is Civil Engineering',
-    'I love! thai food', 'I go to Loyola Marymount University'];
-
-  var imgs = new Array ("images/juggling.png", "images/arms.jpg", "images/triplejump2.png", "images/civil.png", "images/thai.png", "images/lmu.png");
+  const facts = [
+    {text: 'I can juggle', imageSrc: 'images/juggling.png'}, 
+    {text: 'My arms are double-jointed', imageSrc: 'images/arms.jpg'}, 
+    {text: 'I did the triple jump in high school', imageSrc: 'images/triplejump2.png'}, 
+    {text: 'My major is Civil Engineering', imageSrc: 'images/civil.png'},
+    {text: 'I love! thai food', imageSrc: 'images/thai.png'},
+    {text: 'I go to Loyola Marymount University', imageSrc: 'images/lmu.png'}
+    ];
 
   // Pick a random fact.
   const index = Math.floor(Math.random() * facts.length);
-  const fact = facts[index];
-  const image = imgs[index];
+  const fact = facts[index].text;
+  const image = imgs[index].imageSrc;
   
 
   // Add it to the page.
@@ -35,55 +38,30 @@ function addRandomFact() {
   document.getElementById('img-container').src = image;
 }
 
-// "scroll" to next experience
-function nextExperience() {
+const experiences = [
+  {title: 'WORK EXPERIENCE:', details: ''}, 
+  {title: 'STEP INTERN AT GOOGLE', details: 'May 2020-Present'}, 
+  {title: 'RESEARCH ASSISTANT AT LMU', details: 'Sep 2019-Mar 2019'},
+  {title: 'SUMMER INTERN AT ELECTRO SCAN INC.', details: 'Jun 2018-Aug 2018'},
+  {title: 'SUMMER LIFEGUARD AT YMCA', details: 'May 2017-Jun 2017'},
+  {title: 'EDUCATION:', details: ''},
+  {title: 'LOYOLA MARYMOUNT UNIVERSITY', details: ' Pursuing Civil Engineering, Computer Science'},
+  {title: 'SACRAMENTO COUNTRY DAY SCHOOL', details: 'High School Diploma (2019)'}
+];
+
+var selectedExperience = 0;
+
+function selectExperience(index) {
   const expContainer = document.getElementById('exp-container');
-  const exps = [
-    {title: 'WORK EXPERIENCE:', dets: ''}, 
-    {title: 'STEP INTERN AT GOOGLE', dets: 'May 2020-Present'}, 
-    {title: 'RESEARCH ASSISTANT AT LMU', dets: 'Sep 2019-Mar 2019'},
-    {title: 'SUMMER INTERN AT ELECTRO SCAN INC.', dets: 'Jun 2018-Aug 2018'},
-    {title: 'SUMMER LIFEGUARD AT YMCA', dets: 'May 2017-Jun 2017'},
-    {title: 'EDUCATION:', dets: ''},
-    {title: 'LOYOLA MARYMOUNT UNIVERSITY', dets: ' Pursuing Civil Engineering, Computer Science'},
-    {title: 'SACRAMENTO COUNTRY DAY SCHOOL', dets: 'High School Diploma (2019)'}
-  ]
-  // find which is the current experience, and display the next
-  for(i = 0; i < exps.length; i++) {
-    if (expContainer.innerHTML.substring(3,12).localeCompare(exps[i].title.substring(0,9)) == 0) {
-      if (i < exps.length-1) {
-        expContainer.innerHTML = exps[i+1].title.bold() + "<br />" + exps[i+1].dets;
-        break;
-      } else {
-        expContainer.innerHTML = exps[0].title.bold() + "<br />" + exps[0].dets;
-        break;
-      }
-    }
-  }
+  expContainer.innerHTML = experiences[index].title.bold() + "<br />" + experiences[index].details;
 }
 
-// same as above, but scroll backwards 
-function lastExperience() {
-  const expContainer = document.getElementById('exp-container');
-  const exps = [
-    {title: 'WORK EXPERIENCE:', dets: ''}, 
-    {title: 'STEP INTERN AT GOOGLE', dets: 'May 2020-Present'}, 
-    {title: 'RESEARCH ASSISTANT AT LMU', dets: 'Sep 2019-Mar 2019'},
-    {title: 'SUMMER INTERN AT ELECTRO SCAN INC.', dets: 'Jun 2018-Aug 2018'},
-    {title: 'SUMMER LIFEGUARD AT YMCA', dets: 'May 2017-Jun 2017'},
-    {title: 'EDUCATION:', dets: ''},
-    {title: 'LOYOLA MARYMOUNT UNIVERSITY', dets: ' Pursuing Civil Engineering, Computer Science'},
-    {title: 'SACRAMENTO COUNTRY DAY SCHOOL', dets: 'High School Diploma (2019)'}
-  ]
-  for(i = 0; i < exps.length; i++) {
-    if (expContainer.innerHTML.substring(3,12).localeCompare(exps[i].title.substring(0,9)) == 0) {
-      if (i != 0) {
-        expContainer.innerHTML = exps[i-1].title.bold() + "<br />" + exps[i-1].dets;
-        break;
-      } else {
-        expContainer.innerHTML = exps[exps.length-1].title.bold() + "<br />" + exps[exps.length-1].dets;
-        break;
-      }
-    }
-  }
+function nextExperience() {
+  selectExperience((selectedExperience+1) % experiences.length);
+  selectedExperience++;
+}
+
+function previousExperience() {
+  selectExperience((selectedExperience-1) % experiences.length);
+  selectedExperience--;
 }
