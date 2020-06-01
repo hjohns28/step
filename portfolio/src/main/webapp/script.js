@@ -35,60 +35,30 @@ function addRandomFact() {
   document.getElementById('img-container').src = image;
 }
 
-function nextExperience() {
+const experiences = [
+  {title: 'WORK EXPERIENCE:', details: ''}, 
+  {title: 'STEP INTERN AT GOOGLE', details: 'May 2020-Present'}, 
+  {title: 'RESEARCH ASSISTANT AT LMU', details: 'Sep 2019-Mar 2019'},
+  {title: 'SUMMER INTERN AT ELECTRO SCAN INC.', details: 'Jun 2018-Aug 2018'},
+  {title: 'SUMMER LIFEGUARD AT YMCA', details: 'May 2017-Jun 2017'},
+  {title: 'EDUCATION:', details: ''},
+  {title: 'LOYOLA MARYMOUNT UNIVERSITY', details: ' Pursuing Civil Engineering, Computer Science'},
+  {title: 'SACRAMENTO COUNTRY DAY SCHOOL', details: 'High School Diploma (2019)'}
+];
+
+var selectedExperience = 0;
+
+function selectExperience(index) {
   const expContainer = document.getElementById('exp-container');
-  const exps = [
-    {title: 'WORK EXPERIENCE:', dets: ''}, 
-    {title: 'STEP INTERN AT GOOGLE', dets: 'May 2020-Present'}, 
-    {title: 'RESEARCH ASSISTANT AT LMU', dets: 'Sep 2019-Mar 2019'},
-    {title: 'SUMMER INTERN AT ELECTRO SCAN INC.', dets: 'Jun 2018-Aug 2018'},
-    {title: 'SUMMER LIFEGUARD AT YMCA', dets: 'May 2017-Jun 2017'},
-    {title: 'EDUCATION:', dets: ''},
-    {title: 'LOYOLA MARYMOUNT UNIVERSITY', dets: ' Pursuing Civil Engineering, Computer Science'},
-    {title: 'SACRAMENTO COUNTRY DAY SCHOOL', dets: 'High School Diploma (2019)'}
-  ]
-  for(i = 0; i < exps.length; i++) {
-    //see which experience slide is currently displayed, and display the succeeding one
-    //substring used so that bold tags, <b>, not included in comparing the strings
-    const pureCurrentTextString = expContainer.innerHTML.substring(3,12);
-    const correspondingTitleString = exps[i].title.substring(0,9);
-    if (pureCurrentTextString.localeCompare(correspondingTitleString) == 0) {
-      if (i < exps.length-1) {
-        expContainer.innerHTML = exps[i+1].title.bold() + "<br />" + exps[i+1].dets;
-        break;
-      } else {
-        expContainer.innerHTML = exps[0].title.bold() + "<br />" + exps[0].dets;
-        break;
-      }
-    }
-  }
+  expContainer.innerHTML = experiences[index].title.bold() + "<br />" + experiences[index].details;
+}
+
+function nextExperience() {
+  selectExperience((selectedExperience+1) % experiences.length);
+  selectedExperience++;
 }
 
 function previousExperience() {
-  const expContainer = document.getElementById('exp-container');
-  const exps = [
-    {title: 'WORK EXPERIENCE:', dets: ''}, 
-    {title: 'STEP INTERN AT GOOGLE', dets: 'May 2020-Present'}, 
-    {title: 'RESEARCH ASSISTANT AT LMU', dets: 'Sep 2019-Mar 2019'},
-    {title: 'SUMMER INTERN AT ELECTRO SCAN INC.', dets: 'Jun 2018-Aug 2018'},
-    {title: 'SUMMER LIFEGUARD AT YMCA', dets: 'May 2017-Jun 2017'},
-    {title: 'EDUCATION:', dets: ''},
-    {title: 'LOYOLA MARYMOUNT UNIVERSITY', dets: ' Pursuing Civil Engineering, Computer Science'},
-    {title: 'SACRAMENTO COUNTRY DAY SCHOOL', dets: 'High School Diploma (2019)'}
-  ]
-  for(i = 0; i < exps.length; i++) {
-    //see which experience slide is currently displayed, and display the previous one
-    //substring used so that bold tags, <b>, not included in comparing the strings
-    const pureCurrentTextString = expContainer.innerHTML.substring(3,12);
-    const correspondingTitleString = exps[i].title.substring(0,9);
-    if (pureCurrentTextString.localeCompare(correspondingTitleString) == 0) {
-      if (i != 0) {
-        expContainer.innerHTML = exps[i-1].title.bold() + "<br />" + exps[i-1].dets;
-        break;
-      } else {
-        expContainer.innerHTML = exps[exps.length-1].title.bold() + "<br />" + exps[exps.length-1].dets;
-        break;
-      }
-    }
-  }
+  selectExperience((selectedExperience-1) % experiences.length);
+  selectedExperience--;
 }
