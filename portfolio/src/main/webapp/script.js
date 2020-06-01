@@ -65,3 +65,9 @@ function previousExperience() {
   selectExperience((selectedExperience-1) % experiences.length);
   selectedExperience--;
 }
+
+function getServerMessage() {
+  fetch('/data').then(response => response.text()).then((message) => {
+    document.getElementById('message-container').innerHTML = message;
+  });
+}
