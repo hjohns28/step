@@ -65,15 +65,19 @@ function previousExperience() {
 
 function getServerComments() {
   fetch('/data').then(response => response.json()).then((comments) => {
-    const individualComments = document.getElementById('comments-container');
-    individualComments.innerHTML = '';
-    individualComments.appendChild(
-      createComment('Comment: ' + comments[0]));
-    individualComments.appendChild(
-      createComment('Comment: ' + comments[1]));
-    individualComments.appendChild(
-      createComment('Comment: ' + comments[2]));
+    populateComments(comments);
   });
+}
+
+function populateComments(comments) {
+  const individualComments = document.getElementById('comments-container');
+  individualComments.innerHTML = '';
+  individualComments.appendChild(
+    createComment('Comment: ' + comments[0]));
+  individualComments.appendChild(
+    createComment('Comment: ' + comments[1]));
+  individualComments.appendChild(
+    createComment('Comment: ' + comments[2]));
 }
 
 function createComment(text) {

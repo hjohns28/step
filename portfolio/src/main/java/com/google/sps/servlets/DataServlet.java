@@ -34,9 +34,9 @@ public class DataServlet extends HttpServlet {
     comments.add("Maybe try this");
 
     Gson gson = new Gson();
-    String commentsjson = gson.toJson(comments);
+    String commentsJson = gson.toJson(comments);
 
     response.setContentType("application/json;");
-    response.getWriter().println(commentsjson);
+    response.getWriter().println(commentsJson);
   }
 }
