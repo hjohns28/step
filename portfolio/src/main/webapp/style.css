@@ -167,3 +167,10 @@ section {
   display: inline-block;
   margin-top: 50px;
 }
+
+#comments-container {
+    max-height: 50px;
+    list-style: none;
+    overflow: scroll;
+    background: white;
+}

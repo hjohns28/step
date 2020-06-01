@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="style.css">
     <script src="script.js"></script>
   </head>
-  <body>
+  <body onload="getServerComments()">
     <div id="content">
       <h1>Heidi Johnson's Portfolio</h1>
       <section class="welcomepage">
@@ -22,9 +22,15 @@
             <a class="link" href="gallery.html">Gallery</a>
             <a class="link" href="random.html">Random Facts</a>
             <a class="link" href="planet.html">Sustainability</a>
-            <button onclick="getServerComments()">Comments</button>
-            <div id="comments-container"></div>
           </div>
+          <br>
+          <form action="/data" method="POST">
+
+            <label for="comment">Comment:</label>
+            <input type="text" name="comment">
+            <input type="submit" />
+          </form>
+          <ul id="comments-container"></ul>
         </div>
       </section>
       <footer>
