@@ -37,3 +37,31 @@ function addRandomFact() {
 
   document.getElementById('img-container').src = image;
 }
+
+const experiences = [
+  {title: 'WORK EXPERIENCE:', details: ''}, 
+  {title: 'STEP INTERN AT GOOGLE', details: 'May 2020-Present'}, 
+  {title: 'RESEARCH ASSISTANT AT LMU', details: 'Sep 2019-Mar 2019'},
+  {title: 'SUMMER INTERN AT ELECTRO SCAN INC.', details: 'Jun 2018-Aug 2018'},
+  {title: 'SUMMER LIFEGUARD AT YMCA', details: 'May 2017-Jun 2017'},
+  {title: 'EDUCATION:', details: ''},
+  {title: 'LOYOLA MARYMOUNT UNIVERSITY', details: ' Pursuing Civil Engineering, Computer Science'},
+  {title: 'SACRAMENTO COUNTRY DAY SCHOOL', details: 'High School Diploma (2019)'}
+];
+
+var selectedExperience = 0;
+
+function selectExperience(index) {
+  const expContainer = document.getElementById('exp-container');
+  expContainer.innerHTML = experiences[index].title.bold() + "<br />" + experiences[index].details;
+}
+
+function nextExperience() {
+  selectExperience((selectedExperience+1) % experiences.length);
+  selectedExperience++;
+}
+
+function previousExperience() {
+  selectExperience((selectedExperience-1) % experiences.length);
+  selectedExperience--;
+}
