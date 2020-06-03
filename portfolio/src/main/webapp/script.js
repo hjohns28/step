@@ -63,16 +63,16 @@ function previousExperience() {
   selectedExperience--;
 }
 
-var number = 0;
+var numCommentsSelected = 0;
 
 function storeNumberComments() {
   var comments = document.getElementById('number-comments');
-  number = comments.options[comments.selectedIndex].value;
+  numCommentsSelected = comments.options[comments.selectedIndex].value;
   getServerComments();
 }
 
 function getServerComments() {
-  fetch('/data?number-comments='+number).then(response => response.json()).then((commentSection) => {
+  fetch('/data?number-comments='+numCommentsSelected).then(response => response.json()).then((commentSection) => {
     populateComments(commentSection);
   });
 }
@@ -92,6 +92,6 @@ function createComment(text) {
 }
 
 function deleteComments() {
-    number = 0;
+    numCommentsSelected = 0;
     fetch('/delete-data', {method: 'POST'}).then(getServerComments());
 }
