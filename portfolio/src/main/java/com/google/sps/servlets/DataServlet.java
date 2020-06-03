@@ -42,9 +42,7 @@ public class DataServlet extends HttpServlet {
     ArrayList<String> commentSection = new ArrayList<String>();
     for (Entity entity : results.asIterable()) {
         String text = (String) entity.getProperty("text");
-
-        String comment = text;
-        commentSection.add(comment);
+        commentSection.add(text);
     }
     
     Gson gson = new Gson();
