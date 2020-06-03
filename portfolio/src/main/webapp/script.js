@@ -63,14 +63,23 @@ function previousExperience() {
   selectedExperience--;
 }
 
+var number = 0;
+
+function storeNumberComments() {
+  var comments = document.getElementById('number-comments');
+  number = comments.options[comments.selectedIndex].value;
+  getServerComments();
+}
+
 function getServerComments() {
-  fetch('/data').then(response => response.json()).then((commentSection) => {
+  fetch('/data?number-comments='+number).then(response => response.json()).then((commentSection) => {
     populateComments(commentSection);
   });
 }
 
 function populateComments(commentSection) {
   const individualComments = document.getElementById('comments-container');
+  individualComments.innerHTML = '';
   commentSection.forEach((element) => {
       individualComments.appendChild(createComment(element));
   });
@@ -80,4 +89,9 @@ function createComment(text) {
   const liComment = document.createElement('li');
   liComment.innerText = text;
   return liComment;
+}
+
+function deleteComments() {
+    number = 0;
+    fetch('/delete-data', {method: 'POST'}).then(getServerComments());
 }
