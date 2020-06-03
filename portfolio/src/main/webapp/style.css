@@ -112,7 +112,7 @@ section {
   padding: 10px;
   text-align: center;
   background-color: #F0F8FF;
-  height: 80%;
+  height: 75%;
 }
 
 .aboutmepage {
@@ -169,8 +169,71 @@ section {
 }
 
 #comments-container {
-    max-height: 50px;
+    max-height: 500px;
     list-style: none;
     overflow: scroll;
     background: white;
+    float: left;
+    padding: 0px;
+    width: 100%;
+}
+
+#addcomment {
+    float: left;
+}
+
+#nav {
+    list-style-type: none;
+    margin: 0px;
+    height: 5%;
+    padding: 10px;
+    background: #F0F8FF;
+    border: solid;
+}
+
+.navli {
+    display: inline;
+}
+
+.navlink:hover {
+    text-decoration: underline;
+}
+
+.navlink {
+    text-decoration: none;
+    color: black;
+    padding: 25px;
+    font-weight: bold;
+}
+
+.welcomepage {
+    float: right;
+    width: 75%;
+}
+
+.comments {
+    float: left;
+    width: 25%;
+    border-right: solid;
+}
+
+footer {
+    bottom: 0;
+    position: absolute;
+    width: 100%;
+}
+
+#delete {
+    position: absolute;
+    bottom: 100px;
+    left: 9%;
+}
+
+#pick-number-comments {
+    float: left;
+}
+
+.commentli {
+    border: solid;
+    margin: 10px;
 }
