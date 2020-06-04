@@ -63,16 +63,14 @@ function previousExperience() {
   selectedExperience--;
 }
 
-var number = 0;
-
-function storeNumberComments() {
+function getNumCommentsSelected() {
   var comments = document.getElementById('number-comments');
-  number = comments.options[comments.selectedIndex].value;
-  getServerComments();
+  var numCommentsSelected = comments.options[comments.selectedIndex].value;
+  getServerComments(numCommentsSelected);
 }
 
-function getServerComments() {
-  fetch('/data?number-comments='+number).then(response => response.json()).then((commentSection) => {
+function getServerComments(numCommentsSelected) {
+  fetch('/data?number-comments='+numCommentsSelected).then(response => response.json()).then((commentSection) => {
     populateComments(commentSection);
   });
 }
@@ -92,6 +90,5 @@ function createComment(text) {
 }
 
 function deleteComments() {
-    number = 0;
-    fetch('/delete-data', {method: 'POST'}).then(getServerComments());
+  fetch('/delete-data', {method: 'POST'}).then(getServerComments(0));
 }

@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="style.css">
     <script src="script.js"></script>
   </head>
-  <body onload="getServerComments()">
+  <body onload="getNumCommentsSelected()">
     <div id="content">
       <h1>Heidi Johnson's Portfolio</h1>
       <section class="welcomepage">
@@ -32,15 +32,24 @@
           <ul id="comments-container"></ul>
           
           <label for="number-comments">Number of comments:</label>
-            <select onchange="storeNumberComments()" name="number-comments" id="number-comments">
-              <option value="0">0</option>
-              <option value="1">1</option>
-              <option value="2">2</option>
-              <option value="3">3</option>
-              <option value="4">4</option>
-              <option value="5">5</option>
+            <select onclick="getNumCommentsSelected()" name="number-comments" id="number-comments">
+              <option>0</option>
+              <option>1</option>
+              <option>2</option>
+              <option>3</option>
+              <option>4</option>
+              <option>5</option>
             </select> 
-          
+          <script>
+            document.getElementById('number-comments').onchange = function() {
+              localStorage.setItem('selectedtem', document.getElementById('number-comments').value);
+            };
+
+            if (localStorage.getItem('selectedtem')) {
+              document.getElementById('number-comments').options[localStorage.getItem('selectedtem')].selected = true;
+            }
+          </script>
+
           <button onclick="deleteComments()">Delete Comments</button>
 
         </div>
