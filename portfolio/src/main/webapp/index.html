@@ -42,11 +42,11 @@
             </select> 
           <script>
             document.getElementById('number-comments').onchange = function() {
-              localStorage.setItem('selectedtem', document.getElementById('number-comments').value);
+              localStorage.setItem('selectedItem', document.getElementById('number-comments').value);
             };
 
-            if (localStorage.getItem('selectedtem')) {
-              document.getElementById('number-comments').options[localStorage.getItem('selectedtem')].selected = true;
+            if (localStorage.getItem('selectedItem')) {
+              document.getElementById('number-comments').options[localStorage.getItem('selectedItem')].selected = true;
             }
           </script>
 
