@@ -73,26 +73,55 @@ function storeNumberComments() {
 
 function getServerComments() {
   fetch('/data?number-comments='+number).then(response => response.json()).then((commentSection) => {
-    populateComments(commentSection);
+    if (commentSection.length == 0 && number != 0){
+      displayTotalComments(commentSection);
+    } else if (commentSection.length > 0) {
+      displayTotalComments(commentSection);
+      populateComments(commentSection);
+    } else {
+      const commentContainer = document.getElementById('comments-container');
+      commentContainer.innerHTML = '';
+    }
   });
+}
+
+function displayTotalComments(commentSection) { 
+  const commentContainer = document.getElementById('comments-container');
+  commentContainer.innerHTML = '';
+  const liTotalComments = document.createElement('li');
+  liTotalComments.innerText = "(out of " + commentSection.length + " comment(s))";
+  liTotalComments.id = "totalCommentsLi";
+  commentContainer.appendChild(liTotalComments);
 }
 
 function populateComments(commentSection) {
   const individualComments = document.getElementById('comments-container');
-  individualComments.innerHTML = '';
   commentSection.forEach((element) => {
-      individualComments.appendChild(createComment(element));
+    individualComments.appendChild(createComment(element));
   });
 }
 
-function createComment(text) {
+function createComment(element) {
   const liComment = document.createElement('li');
-  liComment.innerText = text;
+  liComment.innerText = element.key + ": " + element.value;
   liComment.className = "commentli";
+  liComment.id = element.key + element.value;
+  const deleteComment = document.createElement('button');
+  deleteComment.innerText = "X";
+  deleteComment.className = "singleDelete";
+  liComment.appendChild(deleteComment);
+  deleteComment.addEventListener("click", function() {
+    deleteSingleComment(liComment.id);
+  });
   return liComment;
 }
 
-function deleteComments() {
-    number = 0;
-    fetch('/delete-data', {method: 'POST'}).then(getServerComments());
+function deleteSingleComment(id) {
+  number = 0;
+  fetch('/delete-data?comment-id='+id, {method: 'POST'}).then(getServerComments());
+}
+
+function deleteAllComments(){
+  number = 0;
+  fetch('/delete-data?comment-id=all', {method: 'POST'}).then(getServerComments());
 }

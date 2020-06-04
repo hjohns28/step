@@ -169,71 +169,93 @@ section {
 }
 
 #comments-container {
-    max-height: 500px;
-    list-style: none;
-    overflow: scroll;
-    background: white;
-    float: left;
-    padding: 0px;
-    width: 100%;
+  max-height: 500px;
+  list-style: none;
+  overflow: scroll;
+  background: aliceblue;
+  float: left;
+  padding: 0px;
+  width: 100%;
 }
 
 #addcomment {
-    float: left;
+  float: left;
+  text-align: left;
 }
 
 #nav {
-    list-style-type: none;
-    margin: 0px;
-    height: 5%;
-    padding: 10px;
-    background: #F0F8FF;
-    border: solid;
+  list-style-type: none;
+  margin: 0px;
+  height: 5%;
+  padding: 10px;
+  background: #F0F8FF;
+  border: solid;
 }
 
 .navli {
-    display: inline;
+  display: inline;
 }
 
 .navlink:hover {
-    text-decoration: underline;
+  text-decoration: underline;
 }
 
 .navlink {
-    text-decoration: none;
-    color: black;
-    padding: 25px;
-    font-weight: bold;
+  text-decoration: none;
+  color: black;
+  padding: 25px;
+  font-weight: bold;
 }
 
 .welcomepage {
-    float: right;
-    width: 75%;
+  float: right;
+  width: 75%;
 }
 
 .comments {
-    float: left;
-    width: 25%;
-    border-right: solid;
+  float: left;
+  width: 25%;
+  border-right: solid;
 }
 
 footer {
-    bottom: 0;
-    position: absolute;
-    width: 100%;
+  bottom: 0;
+  position: absolute;
+  width: 100%;
 }
 
 #delete {
-    position: absolute;
-    bottom: 100px;
-    left: 9%;
+  position: absolute;
+  bottom: 100px;
+  left: 9%;
 }
 
 #pick-number-comments {
-    float: left;
+  float: left;
 }
 
 .commentli {
-    border: solid;
-    margin: 10px;
+  text-align: left;
+  margin: 10px;
+  background: white;
+}
+
+#newcomment {
+  border: solid;
+  height: 110px;
+  margin-bottom: 10px;
+}
+
+#totalCommentsLi {
+  text-align: center;
+  color: gray;
+}
+
+.singleDelete {
+  color: red;
+  float: right;
+}
+
+.singleDelete:hover {
+  opacity: 0.5;
 }
