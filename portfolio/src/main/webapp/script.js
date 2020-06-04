@@ -90,5 +90,11 @@ function createComment(text) {
 }
 
 function deleteComments() {
+<<<<<<< HEAD
   fetch('/delete-data', {method: 'POST'}).then(getServerComments(0));
 }
+=======
+    numCommentsSelected = 0;
+    fetch('/delete-data', {method: 'POST'}).then(getServerComments());
+}
+>>>>>>> 5d48a2158af2d35ec4f6bfd9233f58220271592f
