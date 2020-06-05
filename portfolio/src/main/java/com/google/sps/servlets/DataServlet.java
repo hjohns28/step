@@ -28,11 +28,6 @@ import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.datastore.Query.SortDirection;
-import com.google.cloud.datastore.EntityQuery;
-import com.google.cloud.datastore.StructuredQuery;
-import com.google.cloud.datastore.StructuredQuery.CompositeFilter;
-import com.google.cloud.datastore.StructuredQuery.OrderBy;
-import com.google.cloud.datastore.StructuredQuery.PropertyFilter;
 
 @WebServlet("/data")
 public class DataServlet extends HttpServlet {
@@ -40,23 +35,24 @@ public class DataServlet extends HttpServlet {
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     int commentCount = getRequestedCommentCount(request);
-
-    Query<Entity> query = Query.newEntityQueryBuilder().setKind("Comment").setLimit(5).build();
-
-    //Query query = new Query("Comment").addSort("timestamp", SortDirection.DESCENDING);
-
+    Query query = new Query("Comment").addSort("timestamp", SortDirection.DESCENDING);
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     PreparedQuery results = datastore.prepare(query);
 
+    int readCommentCount = 0;
     ArrayList<String> commentSection = new ArrayList<String>();
     for (Entity entity : results.asIterable()) {
+        if (readCommentCount >= commentCount) {
+            break;
+        }
+        readCommentCount++;
         String text = (String) entity.getProperty("text");
         commentSection.add(text);
     }
     
     //ArrayList<String> limitedComments = new ArrayList<String>();
     //for (int i = 0; i < commentCount; i++) {
-    //    limitedComments.add(commentSection.get(i));
+      //  limitedComments.add(commentSection.get(i));
     //}
     
     Gson gson = new Gson();
