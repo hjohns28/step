@@ -259,3 +259,12 @@ footer {
 .singleDelete:hover {
   opacity: 0.5;
 }
+
+.reactionButton {
+  float: right;
+}
+
+.reaction {
+  margin: 0px;
+  display: inline;
+}
