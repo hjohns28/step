@@ -63,10 +63,9 @@ function previousExperience() {
   selectedExperience--;
 }
 
-function getNumCommentsSelected() {
-  var comments = document.getElementById('number-comments');
-  var numCommentsSelected = comments.options[comments.selectedIndex].value;
-  getServerComments(numCommentsSelected);
+function getNumCommentsSelected(selected) {
+  var selectedValue = selected.value;
+  getServerComments(selectedValue);
 }
 
 function getServerComments(numCommentsSelected) {
@@ -79,8 +78,13 @@ function populateComments(commentSection) {
   const individualComments = document.getElementById('comments-container');
   individualComments.innerHTML = '';
   commentSection.forEach((element) => {
-      individualComments.appendChild(createComment(element));
+    individualComments.appendChild(createComment(element));
   });
+  if (sessionStorage.getItem('selectedValue') === null){
+    document.getElementById('number-comments').options[1].selected = true;
+  } else {
+    document.getElementById('number-comments').options[sessionStorage.getItem('selectedValue')].selected = true;
+  }
 }
 
 function createComment(text) {
@@ -91,4 +95,19 @@ function createComment(text) {
 
 function deleteComments() {
   fetch('/delete-data', {method: 'POST'}).then(getServerComments(0));
+}
+
+function storeSelectedValue(selected) {
+  sessionStorage.setItem('selectedValue', selected.value);
+  if (sessionStorage.getItem('selectedValue')) {
+      document.getElementById('number-comments').options[sessionStorage.getItem('selectedValue')].selected = true;
+  }
+}
+
+function getStoredValue() {
+  var selectedValue = sessionStorage.getItem('selectedValue');
+  if (selectedValue === null) {
+    selectedValue = 1;
+  }
+  getServerComments(selectedValue);
 }
