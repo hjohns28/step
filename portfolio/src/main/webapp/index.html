@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="style.css">
     <script src="script.js"></script>
   </head>
-  <body onload="getStoredValue()">
+  <body onload="getCommentCountAndComments()">
     <div id="content">
       <h1>Heidi Johnson's Portfolio</h1>
       <section class="welcomepage">
@@ -32,7 +32,7 @@
           <ul id="comments-container"></ul>
           
           <label for="number-comments">Number of comments:</label>
-            <select onchange="getNumCommentsSelected(this); storeSelectedValue(this)" name="number-comments" id="number-comments">
+            <select onchange="getAndStoreSelectedValue(this)" name="number-comments" id="number-comments">
               <option>0</option>
               <option selected>1</option>
               <option>2</option>
