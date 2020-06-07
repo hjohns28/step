@@ -37,38 +37,40 @@ public class DataServlet extends HttpServlet {
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    int commentCount = getNumberComments(request);
     Query query = new Query("Comment").addSort("timestamp", SortDirection.DESCENDING);
 
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     PreparedQuery results = datastore.prepare(query);
 
-    List<Map.Entry<String,String>> commentSection = new ArrayList<>();
+    class Comment {
+      public void comment(Entity entity, List<List<String>> commentSection) {
+        List<String> info = new ArrayList<String>(); 
+        String name = (String) entity.getProperty("name");
+        String text = (String) entity.getProperty("text");
+        String id = (String) entity.getProperty("id");
+        info.add(name);
+        info.add(text);
+        info.add(id);
+        commentSection.add(info);
+      }
+    }
+
+    int readCommentCount = 0;
+    List<List<String>> commentSection = new ArrayList<List<String>>();
     for (Entity entity : results.asIterable()) {
-      String name = (String) entity.getProperty("name");
-      String text = (String) entity.getProperty("text");
-      Map.Entry<String,String> nameAndComment=new AbstractMap.SimpleEntry<>(name,text);
-      commentSection.add(nameAndComment);
-    }
-
-    int numberComments = getNumberComments(request);
-    
-    List<Map.Entry<String,String>> limitedComments = new ArrayList<>();
-
-    if (numberComments > commentSection.size()) {
-      numberComments = commentSection.size();
-    }
-
-    for (int i = 0; i < numberComments; i++) {
-      String name = commentSection.get(i).getKey();
-      String text = commentSection.get(i).getValue();
-      Map.Entry<String,String> nameAndComment=new AbstractMap.SimpleEntry<>(name,text);
-      limitedComments.add(nameAndComment);
+      if (readCommentCount >= commentCount) {
+        break;
+      }
+      readCommentCount++;
+      Comment newComment = new Comment();
+      newComment.comment(entity, commentSection);
     }
     
     Gson gson = new Gson();
 
     response.setContentType("application/json;");
-    response.getWriter().println(gson.toJson(limitedComments));
+    response.getWriter().println(gson.toJson(commentSection));
   }
 
   private int getNumberComments(HttpServletRequest request) {
@@ -83,13 +85,16 @@ public class DataServlet extends HttpServlet {
     return numberComments;
   }
 
+  int idNum = 0;
+
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     String userComment = request.getParameter("comment");
     String userName = request.getParameter("name");
     long timestamp = System.currentTimeMillis();
 
-    String id = userName + userComment;
+    String id = Integer.toString(idNum);
+    idNum++;
 
     Entity commentEntity = new Entity("Comment");
     commentEntity.setProperty("name", userName);

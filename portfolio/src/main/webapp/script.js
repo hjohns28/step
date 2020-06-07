@@ -103,25 +103,21 @@ function populateComments(commentSection) {
 
 function createComment(element) {
   const liComment = document.createElement('li');
-  liComment.innerText = element.key + ": " + element.value;
+  liComment.innerText = element[0] + ": " + element[1];
   liComment.className = "commentli";
-  liComment.id = element.key + element.value;
+  liComment.id = element[2];
+  console.log(liComment.id);
   const deleteComment = document.createElement('button');
   deleteComment.innerText = "X";
   deleteComment.className = "singleDelete";
   liComment.appendChild(deleteComment);
   deleteComment.addEventListener("click", function() {
-    deleteSingleComment(liComment.id);
+    deleteComments(liComment.id, "false");
   });
   return liComment;
 }
 
-function deleteSingleComment(id) {
+function deleteComments(id, deleteAll) {
   number = 0;
-  fetch('/delete-data?comment-id='+id, {method: 'POST'}).then(getServerComments());
-}
-
-function deleteAllComments(){
-  number = 0;
-  fetch('/delete-data?comment-id=all', {method: 'POST'}).then(getServerComments());
+  fetch('/delete-data?comment-id='+id+'&delete-all='+deleteAll, {method: 'POST'}).then(getServerComments());
 }
