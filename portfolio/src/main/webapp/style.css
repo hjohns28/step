@@ -259,3 +259,7 @@ footer {
 .singleDelete:hover {
   opacity: 0.5;
 }
+
+#nameLabel {
+  padding-right: 25px;
+}
