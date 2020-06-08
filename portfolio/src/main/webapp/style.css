@@ -41,6 +41,7 @@
   max-width: 150px;
   margin: 45px;
   margin-top: 8%;
+  float: left;
 }
 
 .planet-imgs img:hover {
@@ -61,7 +62,7 @@
 
 .vegan {
   position: absolute;
-  left: 470px;
+  left: 10px;
   top: 470px;
   opacity: 0;
   max-width: 200px;
@@ -69,7 +70,7 @@
 
 .clothes {
   position: absolute;
-  left: 710px;
+  left: 240px;
   top: 470px;
   opacity: 0;
   max-width: 200px;
@@ -77,10 +78,16 @@
 
 .plastic {
   position: absolute;
-  left: 935px;
+  left: 470px;
   top: 470px;
   opacity: 0;
   max-width: 200px;
+}
+
+#chart-container {
+    float: right;
+    margin-right: 50px;
+    margin-top: 50px;
 }
 
 .link:hover {

@@ -84,3 +84,29 @@ function createComment(text) {
   liComment.innerText = text;
   return liComment;
 }
+
+google.charts.load('current', {'packages':['geochart'],
+  'mapsApiKey': 'AIzaSyA4AL7naMTtNVqe8fjfep4lXsl_QuUSPao'});
+google.charts.setOnLoadCallback(drawChart);
+
+function drawChart() {
+  var data = google.visualization.arrayToDataTable([
+          ['Country', 'Popularity'],
+          ['Germany', 200],
+          ['United States', 300],
+          ['Brazil', 400],
+          ['Canada', 500],
+          ['France', 600],
+          ['RU', 700]
+        ]);
+
+  const options = {
+    'title': 'Vegetarian and Vegan Restaurants in the US',
+    'width':500,
+    'height':400
+  };
+
+  var chart = new google.visualization.GeoChart(
+    document.getElementById('chart-container'));
+  chart.draw(data, options);
+}
