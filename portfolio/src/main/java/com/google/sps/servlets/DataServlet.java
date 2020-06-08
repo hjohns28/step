@@ -50,11 +50,6 @@ public class DataServlet extends HttpServlet {
         commentSection.add(text);
     }
     
-    //ArrayList<String> limitedComments = new ArrayList<String>();
-    //for (int i = 0; i < commentCount; i++) {
-      //  limitedComments.add(commentSection.get(i));
-    //}
-    
     Gson gson = new Gson();
 
     response.setContentType("application/json;");
