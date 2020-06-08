@@ -44,9 +44,10 @@ public class DataServlet extends HttpServlet {
 
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     PreparedQuery results = datastore.prepare(query);
-
+    
     int readCommentCount = 0;
     List<Comment> commentSection = new ArrayList<Comment>();
+
     for (Entity entity : results.asIterable()) {
       if (readCommentCount >= commentCount) {
         break;
