@@ -96,6 +96,7 @@ function populateComments(commentSection) {
 function createComment(text) {
   const liComment = document.createElement('li');
   liComment.innerText = text;
+  liComment.className = "commentli";
   return liComment;
 }
 
