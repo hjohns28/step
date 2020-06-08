@@ -85,10 +85,9 @@ function populateComments(commentSection) {
     individualComments.appendChild(createComment(element));
   });
   if (sessionStorage.getItem('selectedValue') === null){
-    document.getElementById('number-comments').options[1].selected = true;
-  } else {
-    document.getElementById('number-comments').options[sessionStorage.getItem('selectedValue')].selected = true;
+    sessionStorage.setItem('selectedValue', selectedValue);
   }
+  document.getElementById('number-comments').options[sessionStorage.getItem('selectedValue')].selected = true;
 }
 
 function createComment(text) {
