@@ -63,20 +63,20 @@ function previousExperience() {
   selectedExperience--;
 }
 
-var number = 0;
+var commentCount = 0;
 
 function storeNumberComments() {
   var comments = document.getElementById('number-comments');
-  number = comments.options[comments.selectedIndex].value;
+  commentCount = comments.options[comments.selectedIndex].value;
   getServerComments();
 }
 
 function getServerComments() {
-  fetch('/data?number-comments='+number).then(response => response.json()).then((commentSection) => {
-    if (commentSection.length < number){
+  fetch('/data?number-comments='+commentCount).then(response => response.json()).then((commentSection) => {
+    if (commentSection.length < commentCount){
       displayTotalComments(commentSection);
       populateComments(commentSection);
-    } else if (number == 0) {
+    } else if (commentCount == 0) {
       const commentContainer = document.getElementById('comments-container');
       commentContainer.innerHTML = '';
     } else {
@@ -106,52 +106,63 @@ function createComment(element) {
   liComment.innerText = element.key + ": " + element.value;
   liComment.className = "commentli";
   liComment.id = element.key + element.value;
-  const deleteComment = addDeleteButton();
+
+  const deleteComment = createDeleteButton();
   liComment.appendChild(deleteComment);
+  
   deleteComment.addEventListener("click", function() {
     deleteSingleComment(liComment.id);
   });
-  const reactToComment = addReactionButton();
+  
+  const reactToComment = createReactionDropDown();
   liComment.appendChild(reactToComment);
+  
   const reactionContainer = document.createElement('div');
   reactionContainer.className = "reactionContainer";
   liComment.appendChild(reactionContainer);
+  
   reactToComment.addEventListener("change", function() {
-    const reaction = addReaction(reactToComment.options[reactToComment.selectedIndex].innerHTML);
+    const reaction = createReactionElement(reactToComment.options[reactToComment.selectedIndex].innerHTML);
     reactionContainer.appendChild(reaction);
   });
+  
   return liComment;
 }
 
-function addReaction(emoji) {
+function createReactionElement(emoji) {
   const reaction = document.createElement('p');
   reaction.innerHTML = emoji;
   reaction.className = "reaction";
   return reaction;
 }
 
-function addDeleteButton(){
+function createDeleteButton(){
   const deleteComment = document.createElement('button');
   deleteComment.innerText = "X";
   deleteComment.className = "singleDelete";
   return deleteComment;
 }
 
-function addReactionButton(){
+function createReactionDropDown(){
   const addReaction = document.createElement('select');
   addReaction.className = "reactionButton";
   addReaction.id = "reactionButton";
+  
   const cover = document.createElement('option');
   cover.innerText = "!!";
   cover.disabled = true;
   cover.selected = true;
+  
   const happy = document.createElement('option');
   happy.innerHTML = String.fromCodePoint(0x1F601);
+  
   const sad = document.createElement('option');
   sad.innerHTML = String.fromCodePoint(0x1F622);
+  
   addReaction.appendChild(cover);
   addReaction.appendChild(happy);
   addReaction.appendChild(sad);
+  
   return addReaction;
 }
 
