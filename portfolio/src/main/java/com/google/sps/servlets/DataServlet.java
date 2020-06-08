@@ -34,13 +34,18 @@ public class DataServlet extends HttpServlet {
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    Query query = new Query("Comment").addSort("timestamp", SortDirection.DESCENDING);;
-
+    int commentCount = getRequestedCommentCount(request);
+    Query query = new Query("Comment").addSort("timestamp", SortDirection.DESCENDING);
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     PreparedQuery results = datastore.prepare(query);
 
+    int readCommentCount = 0;
     ArrayList<String> commentSection = new ArrayList<String>();
     for (Entity entity : results.asIterable()) {
+        if (readCommentCount >= commentCount) {
+            break;
+        }
+        readCommentCount++;
         String text = (String) entity.getProperty("text");
         commentSection.add(text);
     }
@@ -49,6 +54,19 @@ public class DataServlet extends HttpServlet {
 
     response.setContentType("application/json;");
     response.getWriter().println(gson.toJson(commentSection));
+
+  }
+
+  private int getRequestedCommentCount(HttpServletRequest request) {
+    String numberOfCommentsString = request.getParameter("number-comments");
+    int commentCount = 0;
+    try {
+      commentCount = Integer.parseInt(numberOfCommentsString);
+    } catch (NumberFormatException e) {
+      System.err.println("Could not convert to int: " + numberOfCommentsString);
+      return -1;
+    }
+    return commentCount;
   }
 
   @Override
