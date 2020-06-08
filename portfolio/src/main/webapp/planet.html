@@ -3,6 +3,8 @@
   <head>
     <meta charset="UTF-8">
     <title>Environmental Info</title>
+    <script src="https://www.gstatic.com/charts/loader.js"></script>
+    <script src="script.js"></script>
     <link rel="stylesheet" href="style.css">
     <script src="script.js"></script>
   </head>
@@ -19,7 +21,8 @@
           <img src="images/veggies2.png"/>
           <div class="vegan"><b>Eat plant-based.</b> Going vegan, or just reducing meat, dairy, and egg
               consumption, is one of the greatest ways an individual can reduce
-              their carbon footprint! 
+              their carbon footprint! Check out the map on the right to find some restaurants to help
+              you with this. 
           </div>
           <img src="images/clothes2.svg"/>
           <div class="clothes"><b>Say no to fast fashion.</b> The fashion industry pollutes the ocean
@@ -31,6 +34,12 @@
               reusable water bottle or taking reusable bags to the grocery store can make 
               a big difference!
           </div>
+        </div>
+        <hr id="dividing-line">
+        <div class="chart">
+          <h4 id="chart-title">US Restaurants with Vegan/Vegetarian Options</h4>
+          <div id="chart-container"></div>
+          <p id="chart-info">(First 100 restaurants from datafiniti's dataset displayed)</p>
         </div>
       </section>
       <footer>

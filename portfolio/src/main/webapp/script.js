@@ -84,3 +84,31 @@ function createComment(text) {
   liComment.innerText = text;
   return liComment;
 }
+
+google.charts.load('current', {'packages':['geochart'],
+  'mapsApiKey': 'AIzaSyBWdnwt9lVQ2rh-46MMfEWBDH9E5UVun7g'});
+google.charts.setOnLoadCallback(drawChart);
+
+function drawChart() {
+  fetch('/vegan-restaurants').then(response => response.json())
+  .then((veganRestaurants) => {
+    const data = new google.visualization.DataTable();
+    data.addColumn('string', 'address');
+    data.addColumn('string', 'name');
+    Object.keys(veganRestaurants).forEach((address) => {
+      data.addRow([address, veganRestaurants[address]]);
+    });
+
+    const options = {
+      width:500,
+      height:400,
+      region:'US',
+      displayMode:'markers',
+      backgroundColor: '#F0F8FF'
+    };
+
+    const chart = new google.visualization.GeoChart(
+      document.getElementById('chart-container'));
+    chart.draw(data, options);
+  });
+}
