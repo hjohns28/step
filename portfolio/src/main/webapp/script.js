@@ -111,12 +111,12 @@ function createComment(element) {
   deleteComment.className = "singleDelete";
   liComment.appendChild(deleteComment);
   deleteComment.addEventListener("click", function() {
-    deleteComments(liComment.id, "false");
+    deleteComments(liComment.id, false);
   });
   return liComment;
 }
 
 function deleteComments(id, deleteAll) {
   number = 0;
-  fetch('/delete-data?comment-id='+id+'&delete-all='+deleteAll, {method: 'POST'}).then(getServerComments());
+  fetch('/delete-data?comment-id='+id+'&delete-all='+deleteAll.toString(), {method: 'POST'}).then(getServerComments());
 }

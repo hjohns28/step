@@ -110,7 +110,8 @@ public class DataServlet extends HttpServlet {
         idNum = id;
       }
     }
-    return idNum++;
+    idNum++;
+    return idNum;
   }
 
   @Override
@@ -121,7 +122,6 @@ public class DataServlet extends HttpServlet {
     long timestamp = System.currentTimeMillis();
 
     String id = Integer.toString(idNum);
-    idNum++;
 
     Entity commentEntity = new Entity("Comment");
     commentEntity.setProperty("name", userName);
