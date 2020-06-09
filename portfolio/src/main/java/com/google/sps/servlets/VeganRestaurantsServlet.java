@@ -23,6 +23,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+/** Returns vegan restaurants data as a JSON object, e.g. {"1600 Fulton Ave": "Joe's Cafe", "1212 River Dr": "Domino's"}] */
 @WebServlet("/vegan-restaurants")
 public class VeganRestaurantsServlet extends HttpServlet {
 
@@ -31,7 +32,7 @@ public class VeganRestaurantsServlet extends HttpServlet {
   @Override
   public void init() {
     Scanner scanner = new Scanner(getServletContext().getResourceAsStream(
-      "/WEB-INF/vegan-restaurants.csv"));
+        "/WEB-INF/vegan-restaurants.csv"));
     
     while (scanner.hasNextLine()) {
       String line = scanner.nextLine();
