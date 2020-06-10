@@ -21,6 +21,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map; 
+import java.util.Set; 
+import java.util.AbstractMap;
 import com.google.gson.Gson;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
@@ -34,31 +37,98 @@ public class DataServlet extends HttpServlet {
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    Query query = new Query("Comment").addSort("timestamp", SortDirection.DESCENDING);;
 
+    int commentCount = getRequestedCommentCount(request);
+
+    Query query = new Query("Comment").addSort("timestamp", SortDirection.DESCENDING);
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     PreparedQuery results = datastore.prepare(query);
+    
+    int readCommentCount = 0;
+    List<Comment> commentSection = new ArrayList<Comment>();
 
-    ArrayList<String> commentSection = new ArrayList<String>();
     for (Entity entity : results.asIterable()) {
-        String text = (String) entity.getProperty("text");
-        commentSection.add(text);
+      if (readCommentCount >= commentCount) {
+        break;
+      }
+      readCommentCount++;
+      String name = (String) entity.getProperty("name");
+      String text = (String) entity.getProperty("text");
+      String id = (String) entity.getProperty("id");
+      commentSection.add(new Comment(name, text, id));
+
     }
     
     Gson gson = new Gson();
 
     response.setContentType("application/json;");
     response.getWriter().println(gson.toJson(commentSection));
+
+  }
+
+  public class Comment {
+    private String name;
+    private String text;
+    private String id;
+
+    public Comment(String name, String text, String id) {
+      this.name = name;
+      this.text = text;
+      this.id = id;
+    }
+    public String getName(){
+      return this.name;
+    }
+    public String getText(){
+      return this.text;
+    }
+    public String getId(){
+      return this.id;
+    }
+  }
+
+  private int getRequestedCommentCount(HttpServletRequest request) {
+    String numberOfCommentsString = request.getParameter("number-comments");
+    int commentCount = 0;
+    try {
+      commentCount = Integer.parseInt(numberOfCommentsString);
+    } catch (NumberFormatException e) {
+      System.err.println("Could not convert to int: " + numberOfCommentsString);
+      return -1;
+    }
+    return commentCount;
+  }
+
+  public int getIdNum() {
+    int idNum = 0;
+    Query query = new Query("Comment").addSort("timestamp", SortDirection.DESCENDING);
+    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+    PreparedQuery results = datastore.prepare(query);
+    for (Entity entity : results.asIterable()) {
+      String idString = (String) entity.getProperty("id");
+      int id = Integer.parseInt(idString);
+      if (id > idNum) {
+        idNum = id;
+      }
+    }
+    idNum++;
+    return idNum;
   }
 
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    int idNum = getIdNum();
     String userComment = request.getParameter("comment");
+    String userName = request.getParameter("name");
     long timestamp = System.currentTimeMillis();
 
+    String id = Integer.toString(idNum);
+
     Entity commentEntity = new Entity("Comment");
+    commentEntity.setProperty("name", userName);
     commentEntity.setProperty("text", userComment);
     commentEntity.setProperty("timestamp", timestamp);
+    commentEntity.setProperty("id", id);
 
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     datastore.put(commentEntity);

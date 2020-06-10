@@ -66,22 +66,83 @@ function previousExperience() {
   selectedExperience--;
 }
 
-function getServerComments() {
-  fetch('/data').then(response => response.json()).then((commentSection) => {
-    populateComments(commentSection);
+function getAndStoreSelectedValue(selected) {
+  var selectedValue = selected.value;
+  sessionStorage.setItem('selectedValue', selectedValue);
+  if (sessionStorage.getItem('selectedValue')) {
+    document.getElementById('number-comments').options[sessionStorage.getItem('selectedValue')].selected = true;
+  }
+  getServerComments(selectedValue);
+}
+
+function getCommentCountAndComments() {
+  var selectedValue = sessionStorage.getItem('selectedValue');
+  if (selectedValue === null) {
+    var selected = document.getElementById('number-comments');
+    selectedValue = selected.options[selected.selectedIndex].value;
+    sessionStorage.setItem('selectedValue', selectedValue);
+  }
+  getServerComments(selectedValue);
+}
+
+function getServerComments(commentCount) {
+  fetch('/data?number-comments='+commentCount).then(response => response.json()).then((commentSection) => {
+    if (commentSection.length < commentCount){
+      displayTotalComments(commentSection);
+      populateComments(commentSection);
+    } else {
+      const commentContainer = document.getElementById('comments-container');
+      commentContainer.innerHTML = '';
+      populateComments(commentSection);
+    }
   });
+}
+
+function displayTotalComments(commentSection) { 
+  const commentContainer = document.getElementById('comments-container');
+  commentContainer.innerHTML = '';
+  const liTotalComments = document.createElement('li');
+  liTotalComments.innerText = "(only " + commentSection.length + " comment(s))";
+  liTotalComments.id = "totalCommentsLi";
+  commentContainer.appendChild(liTotalComments);
 }
 
 function populateComments(commentSection) {
   const individualComments = document.getElementById('comments-container');
   commentSection.forEach((element) => {
-      individualComments.appendChild(createComment(element));
+    individualComments.appendChild(createComment(element));
   });
+  document.getElementById('number-comments').options[sessionStorage.getItem('selectedValue')].selected = true;
 }
 
-function createComment(text) {
+function createComment(element) {
   const liComment = document.createElement('li');
-  liComment.innerText = text;
+  liComment.innerText = element.name + ": " + element.text;
+  liComment.className = "commentli";
+  liComment.id = element.id;
+  
+  const deleteComment = document.createElement('button');
+  deleteComment.innerText = "X";
+  deleteComment.className = "singleDelete";
+
+  liComment.appendChild(deleteComment);
+  
+  deleteComment.addEventListener("click", function() {
+    deleteComments(liComment.id, false);
+  });
+  
+  const reactToComment = createReactionDropDown();
+  liComment.appendChild(reactToComment);
+  
+  const reactionContainer = document.createElement('div');
+  reactionContainer.className = "reactionContainer";
+  liComment.appendChild(reactionContainer);
+  
+  reactToComment.addEventListener("change", function() {
+    const reaction = createReactionElement(reactToComment.options[reactToComment.selectedIndex].innerHTML);
+    reactionContainer.appendChild(reaction);
+  });
+  
   return liComment;
 }
 
@@ -114,4 +175,45 @@ function drawChart() {
             document.getElementById('chart-container'));
         chart.draw(data, options);
       });
+
+function createReactionElement(emoji) {
+  const reaction = document.createElement('p');
+  reaction.innerHTML = emoji;
+  reaction.className = "reaction";
+  return reaction;
+}
+
+function createDeleteButton(){
+  const deleteComment = document.createElement('button');
+  deleteComment.innerText = "X";
+  deleteComment.className = "singleDelete";
+  return deleteComment;
+}
+
+function createReactionDropDown(){
+  const addReaction = document.createElement('select');
+  addReaction.className = "reactionButton";
+  addReaction.id = "reactionButton";
+  
+  const cover = document.createElement('option');
+  cover.innerText = "!!";
+  cover.disabled = true;
+  cover.selected = true;
+  
+  const happy = document.createElement('option');
+  happy.innerHTML = String.fromCodePoint(0x1F601);
+  
+  const sad = document.createElement('option');
+  sad.innerHTML = String.fromCodePoint(0x1F622);
+  
+  addReaction.appendChild(cover);
+  addReaction.appendChild(happy);
+  addReaction.appendChild(sad);
+  
+  return addReaction;
+}
+
+function deleteComments(id, deleteAll) {
+  number = 0;
+  fetch('/delete-data?comment-id='+id+'&delete-all='+deleteAll.toString(), {method: 'POST'}).then(getCommentCountAndComments());
 }
