@@ -70,20 +70,29 @@ function getAndStoreSelectedValue(selected) {
   var selectedValue = selected.value;
   sessionStorage.setItem('selectedValue', selectedValue);
   if (sessionStorage.getItem('selectedValue')) {
-      document.getElementById('number-comments').options[sessionStorage.getItem('selectedValue')].selected = true;
+    document.getElementById('number-comments').options[sessionStorage.getItem('selectedValue')].selected = true;
   }
   getServerComments(selectedValue);
 }
 
-function getServerComments(numCommentsSelected) {
-  fetch('/data?number-comments='+numCommentsSelected).then(response => response.json()).then((commentSection) => {
+function getCommentCountAndComments() {
+  var selectedValue = sessionStorage.getItem('selectedValue');
+  if (selectedValue === null) {
+    var selected = document.getElementById('number-comments');
+    selectedValue = selected.options[selected.selectedIndex].value;
+    sessionStorage.setItem('selectedValue', selectedValue);
+  }
+  getServerComments(selectedValue);
+}
+
+function getServerComments(commentCount) {
+  fetch('/data?number-comments='+commentCount).then(response => response.json()).then((commentSection) => {
     if (commentSection.length < commentCount){
       displayTotalComments(commentSection);
       populateComments(commentSection);
-    } else if (commentCount == 0) {
+    } else {
       const commentContainer = document.getElementById('comments-container');
       commentContainer.innerHTML = '';
-    } else {
       populateComments(commentSection);
     }
   });
@@ -103,9 +112,6 @@ function populateComments(commentSection) {
   commentSection.forEach((element) => {
     individualComments.appendChild(createComment(element));
   });
-  if (sessionStorage.getItem('selectedValue') === null){
-    sessionStorage.setItem('selectedValue', selectedValue);
-  }
   document.getElementById('number-comments').options[sessionStorage.getItem('selectedValue')].selected = true;
 }
 
@@ -179,5 +185,5 @@ function createReactionDropDown(){
 
 function deleteComments(id, deleteAll) {
   number = 0;
-  fetch('/delete-data?comment-id='+id+'&delete-all='+deleteAll.toString(), {method: 'POST'}).then(getServerComments());
+  fetch('/delete-data?comment-id='+id+'&delete-all='+deleteAll.toString(), {method: 'POST'}).then(getCommentCountAndComments());
 }
