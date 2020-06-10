@@ -39,8 +39,9 @@
 .planet-imgs img {
   max-height: 150px;
   max-width: 150px;
-  margin: 45px;
+  margin: 55px;
   margin-top: 8%;
+  float: left;
 }
 
 .planet-imgs img:hover {
@@ -61,7 +62,7 @@
 
 .vegan {
   position: absolute;
-  left: 470px;
+  left: 15px;
   top: 470px;
   opacity: 0;
   max-width: 200px;
@@ -69,7 +70,7 @@
 
 .clothes {
   position: absolute;
-  left: 710px;
+  left: 260px;
   top: 470px;
   opacity: 0;
   max-width: 200px;
@@ -77,10 +78,35 @@
 
 .plastic {
   position: absolute;
-  left: 935px;
+  left: 510px;
   top: 470px;
   opacity: 0;
   max-width: 200px;
+}
+
+#dividing-line {
+  width: 1px;
+  height: 300px;
+  position: absolute;
+  right: 50%;
+  top: 30%;
+}
+
+#chart-container {
+  float: right;
+  margin-right: 80px;
+}
+
+#chart-title {
+  float: right;
+  margin-right: 180px;
+  margin-bottom: 0px;
+}
+
+#chart-info {
+  position: absolute;
+  bottom: 150px;
+  right: 160px;
 }
 
 .link:hover {
