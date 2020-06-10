@@ -187,3 +187,17 @@ function deleteComments(id, deleteAll) {
   number = 0;
   fetch('/delete-data?comment-id='+id+'&delete-all='+deleteAll.toString(), {method: 'POST'}).then(getCommentCountAndComments());
 }
+
+function isUserLoggedIn() {
+  fetch('/login').then(response => response.text()).then(text => {
+      if (text.trim() === 'yes') {
+        document.getElementById('newcomment').style.display = "block";
+        document.getElementById('logout').style.display = "block";
+        document.getElementById('login').style.display = "none";
+      } else {
+        document.getElementById('newcomment').style.display = "none";
+        document.getElementById('logout').style.display = "none";
+        document.getElementById('login').style.display = "block";
+      }
+  }); 
+}
