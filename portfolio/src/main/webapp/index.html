@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="style.css">
     <script src="script.js"></script>
   </head>
-  <body onload="getServerComments()">
+  <body onload="getCommentCountAndComments()">
     <div id="content">
       <h1>Heidi Johnson's Portfolio</h1>
       <ul class="links" id="nav">
@@ -24,6 +24,22 @@
         <div class="info">
           <img id="heidi" src="images/heidijohnsonpic.JPG"/>
           <br>
+          <form action="/data" method="POST">
+            <label for="comment">Comment:</label>
+            <input type="text" name="comment">
+            <input type="submit" />
+          </form>
+          <ul id="comments-container"></ul>
+          <label for="number-comments">Number of comments:</label>
+            <select onchange="getAndStoreSelectedValue(this)" name="number-comments" id="number-comments">
+              <option>0</option>
+              <option selected>1</option>
+              <option>2</option>
+              <option>3</option>
+              <option>4</option>
+              <option>5</option>
+            </select> 
+          <button onclick="deleteComments()">Delete Comments</button>
         </div>
       </section>
       <section class="comments">   

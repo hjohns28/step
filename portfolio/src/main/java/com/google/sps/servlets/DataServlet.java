@@ -37,9 +37,10 @@ public class DataServlet extends HttpServlet {
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    int commentCount = getNumberComments(request);
-    Query query = new Query("Comment").addSort("timestamp", SortDirection.DESCENDING);
 
+    int commentCount = getRequestedCommentCount(request);
+
+    Query query = new Query("Comment").addSort("timestamp", SortDirection.DESCENDING);
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     PreparedQuery results = datastore.prepare(query);
     
@@ -55,12 +56,14 @@ public class DataServlet extends HttpServlet {
       String text = (String) entity.getProperty("text");
       String id = (String) entity.getProperty("id");
       commentSection.add(new Comment(name, text, id));
+
     }
     
     Gson gson = new Gson();
 
     response.setContentType("application/json;");
     response.getWriter().println(gson.toJson(commentSection));
+
   }
 
   public class Comment {
@@ -84,16 +87,16 @@ public class DataServlet extends HttpServlet {
     }
   }
 
-  private int getNumberComments(HttpServletRequest request) {
-    String numberCommentsString = request.getParameter("number-comments");
-    int numberComments = 0;
+  private int getRequestedCommentCount(HttpServletRequest request) {
+    String numberOfCommentsString = request.getParameter("number-comments");
+    int commentCount = 0;
     try {
-      numberComments = Integer.parseInt(numberCommentsString);
+      commentCount = Integer.parseInt(numberOfCommentsString);
     } catch (NumberFormatException e) {
-      System.err.println("Could not convert to int: " + numberCommentsString);
+      System.err.println("Could not convert to int: " + numberOfCommentsString);
       return -1;
     }
-    return numberComments;
+    return commentCount;
   }
 
   public int getIdNum() {

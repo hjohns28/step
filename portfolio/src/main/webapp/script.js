@@ -16,16 +16,19 @@
  * Adds a random fact to the page.
  */
 function addRandomFact() {
-  const facts =
-    ['I can juggle', 'My arms are double-jointed', 'I did the triple jump in high school', 'My major is Civil Engineering',
-    'I love! thai food', 'I go to Loyola Marymount University'];
-
-  var imgs = new Array ("images/juggling.png", "images/arms.jpg", "images/triplejump2.png", "images/civil.png", "images/thai.png", "images/lmu.png");
+  const facts = [
+    {text: 'I can juggle', imageSrc: 'images/juggling.png'}, 
+    {text: 'My arms are double-jointed', imageSrc: 'images/arms.jpg'}, 
+    {text: 'I did the triple jump in high school', imageSrc: 'images/triplejump2.png'}, 
+    {text: 'My major is Civil Engineering', imageSrc: 'images/civil.png'},
+    {text: 'I love! thai food', imageSrc: 'images/thai.png'},
+    {text: 'I go to Loyola Marymount University', imageSrc: 'images/lmu.png'}
+    ];
 
   // Pick a random fact.
   const index = Math.floor(Math.random() * facts.length);
-  const fact = facts[index];
-  const image = imgs[index];
+  const fact = facts[index].text;
+  const image = imgs[index].imageSrc;
   
 
   // Add it to the page.
@@ -63,16 +66,17 @@ function previousExperience() {
   selectedExperience--;
 }
 
-var number = 0;
-
-function storeNumberComments() {
-  var comments = document.getElementById('number-comments');
-  number = comments.options[comments.selectedIndex].value;
-  getServerComments();
+function getAndStoreSelectedValue(selected) {
+  var selectedValue = selected.value;
+  sessionStorage.setItem('selectedValue', selectedValue);
+  if (sessionStorage.getItem('selectedValue')) {
+      document.getElementById('number-comments').options[sessionStorage.getItem('selectedValue')].selected = true;
+  }
+  getServerComments(selectedValue);
 }
 
-function getServerComments() {
-  fetch('/data?number-comments='+number).then(response => response.json()).then((commentSection) => {
+function getServerComments(numCommentsSelected) {
+  fetch('/data?number-comments='+numCommentsSelected).then(response => response.json()).then((commentSection) => {
     if (commentSection.length == 0 && number != 0){
       displayTotalComments(commentSection);
     } else if (commentSection.length > 0) {
@@ -99,6 +103,10 @@ function populateComments(commentSection) {
   commentSection.forEach((element) => {
     individualComments.appendChild(createComment(element));
   });
+  if (sessionStorage.getItem('selectedValue') === null){
+    sessionStorage.setItem('selectedValue', selectedValue);
+  }
+  document.getElementById('number-comments').options[sessionStorage.getItem('selectedValue')].selected = true;
 }
 
 function createComment(element) {
