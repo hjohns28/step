@@ -10,11 +10,11 @@
     <div id="content">
       <h1>Heidi Johnson's Portfolio</h1>
       <ul class="links" id="nav">
-            <li class="navli"><a class="navlink" href="aboutme.html">About Me</a></li>
-            <li class="navli"><a class="navlink" href="experience.html">Experience</a></li>
-            <li class="navli"><a class="navlink" href="gallery.html">Gallery</a></li>
-            <li class="navli"><a class="navlink" href="random.html">Random Facts</a></li>
-            <li class="navli"><a class="navlink" href="planet.html">Sustainability</a></li>
+        <li class="navli"><a class="navlink" href="aboutme.html">About Me</a></li>
+        <li class="navli"><a class="navlink" href="experience.html">Experience</a></li>
+        <li class="navli"><a class="navlink" href="gallery.html">Gallery</a></li>
+        <li class="navli"><a class="navlink" href="random.html">Random Facts</a></li>
+        <li class="navli"><a class="navlink" href="planet.html">Sustainability</a></li>
       </ul>
       <section class="welcomepage">
         <p>Welcome to my portfolio, I hope you can learn a bit 
@@ -43,11 +43,17 @@
         </div>
       </section>
       <section class="comments">   
-        <form id="addcomment" action="/data" method="POST">
-          <label for="comment">Add Comment:</label>
-          <input type="text" name="comment">
-          <input type="submit" />
-        </form>   
+        <div id="newcomment">
+          <p>Add Comment</p>
+          <form id="addcomment" action="/data" method="POST">
+            <label for="name" id="nameLabel">Name:</label>
+            <input type="text" name="name" placeholder="Jane Doe">
+            <br>
+            <label for="comment">Comment:</label>
+            <input type="text" name="comment" placeholder="Lorem ipsum...">
+            <input type="submit" />
+          </form>   
+        </div>
         <div id="pick-number-comments">     
           <label for="number-comments">View Last </label>
           <select onchange="storeNumberComments()" name="number-comments" id="number-comments">
@@ -62,7 +68,7 @@
         </div>
         <br>
         <ul id="comments-container"></ul>
-        <button id="delete" onclick="deleteComments()">Delete Comments</button>
+        <button id="delete" onclick="deleteComments(null,true)">Delete All</button>
       </section>
       <footer>
         <a href="https://www.linkedin.com/in/heidi-johnson-66997a190/"><img class="logo" src="images/linkedin.png"/></a>

@@ -77,13 +77,29 @@ function getAndStoreSelectedValue(selected) {
 
 function getServerComments(numCommentsSelected) {
   fetch('/data?number-comments='+numCommentsSelected).then(response => response.json()).then((commentSection) => {
-    populateComments(commentSection);
+    if (commentSection.length == 0 && number != 0){
+      displayTotalComments(commentSection);
+    } else if (commentSection.length > 0) {
+      displayTotalComments(commentSection);
+      populateComments(commentSection);
+    } else {
+      const commentContainer = document.getElementById('comments-container');
+      commentContainer.innerHTML = '';
+    }
   });
+}
+
+function displayTotalComments(commentSection) { 
+  const commentContainer = document.getElementById('comments-container');
+  commentContainer.innerHTML = '';
+  const liTotalComments = document.createElement('li');
+  liTotalComments.innerText = "(out of " + commentSection.length + " comment(s))";
+  liTotalComments.id = "totalCommentsLi";
+  commentContainer.appendChild(liTotalComments);
 }
 
 function populateComments(commentSection) {
   const individualComments = document.getElementById('comments-container');
-  individualComments.innerHTML = '';
   commentSection.forEach((element) => {
     individualComments.appendChild(createComment(element));
   });
@@ -93,21 +109,22 @@ function populateComments(commentSection) {
   document.getElementById('number-comments').options[sessionStorage.getItem('selectedValue')].selected = true;
 }
 
-function createComment(text) {
+function createComment(element) {
   const liComment = document.createElement('li');
-  liComment.innerText = text;
+  liComment.innerText = element.name + ": " + element.text;
   liComment.className = "commentli";
+  liComment.id = element.id;
+  const deleteComment = document.createElement('button');
+  deleteComment.innerText = "X";
+  deleteComment.className = "singleDelete";
+  liComment.appendChild(deleteComment);
+  deleteComment.addEventListener("click", function() {
+    deleteComments(liComment.id, false);
+  });
   return liComment;
 }
 
-function deleteComments() {
-  fetch('/delete-data', {method: 'POST'}).then(getServerComments(0));
-}
-
-function getCommentCountAndComments() {
-  var selectedValue = sessionStorage.getItem('selectedValue');
-  if (selectedValue === null) {
-    selectedValue = 1;
-  }
-  getServerComments(selectedValue);
+function deleteComments(id, deleteAll) {
+  number = 0;
+  fetch('/delete-data?comment-id='+id+'&delete-all='+deleteAll.toString(), {method: 'POST'}).then(getServerComments());
 }
