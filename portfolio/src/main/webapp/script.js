@@ -16,16 +16,19 @@
  * Adds a random fact to the page.
  */
 function addRandomFact() {
-  const facts =
-    ['I can juggle', 'My arms are double-jointed', 'I did the triple jump in high school', 'My major is Civil Engineering',
-    'I love! thai food', 'I go to Loyola Marymount University'];
-
-  var imgs = new Array ("images/juggling.png", "images/arms.jpg", "images/triplejump2.png", "images/civil.png", "images/thai.png", "images/lmu.png");
+  const facts = [
+    {text: 'I can juggle', imageSrc: 'images/juggling.png'}, 
+    {text: 'My arms are double-jointed', imageSrc: 'images/arms.jpg'}, 
+    {text: 'I did the triple jump in high school', imageSrc: 'images/triplejump2.png'}, 
+    {text: 'My major is Civil Engineering', imageSrc: 'images/civil.png'},
+    {text: 'I love! thai food', imageSrc: 'images/thai.png'},
+    {text: 'I go to Loyola Marymount University', imageSrc: 'images/lmu.png'}
+    ];
 
   // Pick a random fact.
   const index = Math.floor(Math.random() * facts.length);
-  const fact = facts[index];
-  const image = imgs[index];
+  const fact = facts[index].text;
+  const image = imgs[index].imageSrc;
   
 
   // Add it to the page.
@@ -63,16 +66,17 @@ function previousExperience() {
   selectedExperience--;
 }
 
-var commentCount = 0;
-
-function storeNumberComments() {
-  var comments = document.getElementById('number-comments');
-  commentCount = comments.options[comments.selectedIndex].value;
-  getServerComments();
+function getAndStoreSelectedValue(selected) {
+  var selectedValue = selected.value;
+  sessionStorage.setItem('selectedValue', selectedValue);
+  if (sessionStorage.getItem('selectedValue')) {
+      document.getElementById('number-comments').options[sessionStorage.getItem('selectedValue')].selected = true;
+  }
+  getServerComments(selectedValue);
 }
 
-function getServerComments() {
-  fetch('/data?number-comments='+commentCount).then(response => response.json()).then((commentSection) => {
+function getServerComments(numCommentsSelected) {
+  fetch('/data?number-comments='+numCommentsSelected).then(response => response.json()).then((commentSection) => {
     if (commentSection.length < commentCount){
       displayTotalComments(commentSection);
       populateComments(commentSection);
@@ -99,19 +103,26 @@ function populateComments(commentSection) {
   commentSection.forEach((element) => {
     individualComments.appendChild(createComment(element));
   });
+  if (sessionStorage.getItem('selectedValue') === null){
+    sessionStorage.setItem('selectedValue', selectedValue);
+  }
+  document.getElementById('number-comments').options[sessionStorage.getItem('selectedValue')].selected = true;
 }
 
 function createComment(element) {
   const liComment = document.createElement('li');
-  liComment.innerText = element.key + ": " + element.value;
+  liComment.innerText = element.name + ": " + element.text;
   liComment.className = "commentli";
-  liComment.id = element.key + element.value;
+  liComment.id = element.id;
+  
+  const deleteComment = document.createElement('button');
+  deleteComment.innerText = "X";
+  deleteComment.className = "singleDelete";
 
-  const deleteComment = createDeleteButton();
   liComment.appendChild(deleteComment);
   
   deleteComment.addEventListener("click", function() {
-    deleteSingleComment(liComment.id);
+    deleteComments(liComment.id, false);
   });
   
   const reactToComment = createReactionDropDown();
@@ -166,10 +177,7 @@ function createReactionDropDown(){
   return addReaction;
 }
 
-function deleteSingleComment(id) {
-  fetch('/delete-data?comment-id='+id, {method: 'POST'}).then(location.reload());
-}
-
-function deleteAllComments(){
-  fetch('/delete-data?comment-id=all', {method: 'POST'}).then(location.reload());
+function deleteComments(id, deleteAll) {
+  number = 0;
+  fetch('/delete-data?comment-id='+id+'&delete-all='+deleteAll.toString(), {method: 'POST'}).then(getServerComments());
 }

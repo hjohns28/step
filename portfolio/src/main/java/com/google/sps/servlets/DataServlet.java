@@ -37,59 +37,92 @@ public class DataServlet extends HttpServlet {
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    Query query = new Query("Comment").addSort("timestamp", SortDirection.DESCENDING);
 
+    int commentCount = getRequestedCommentCount(request);
+
+    Query query = new Query("Comment").addSort("timestamp", SortDirection.DESCENDING);
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     PreparedQuery results = datastore.prepare(query);
+    
+    int readCommentCount = 0;
+    List<Comment> commentSection = new ArrayList<Comment>();
 
-    List<Map.Entry<String,String>> commentSection = new ArrayList<>();
     for (Entity entity : results.asIterable()) {
+      if (readCommentCount >= commentCount) {
+        break;
+      }
+      readCommentCount++;
       String name = (String) entity.getProperty("name");
       String text = (String) entity.getProperty("text");
-      Map.Entry<String,String> nameAndComment=new AbstractMap.SimpleEntry<>(name,text);
-      commentSection.add(nameAndComment);
-    }
+      String id = (String) entity.getProperty("id");
+      commentSection.add(new Comment(name, text, id));
 
-    int numberComments = getNumberComments(request);
-    
-    List<Map.Entry<String,String>> limitedComments = new ArrayList<>();
-
-    if (numberComments > commentSection.size()) {
-      numberComments = commentSection.size();
-    }
-
-    for (int i = 0; i < numberComments; i++) {
-      String name = commentSection.get(i).getKey();
-      String text = commentSection.get(i).getValue();
-      Map.Entry<String,String> nameAndComment=new AbstractMap.SimpleEntry<>(name,text);
-      limitedComments.add(nameAndComment);
     }
     
     Gson gson = new Gson();
 
     response.setContentType("application/json;");
-    response.getWriter().println(gson.toJson(limitedComments));
+    response.getWriter().println(gson.toJson(commentSection));
+
   }
 
-  private int getNumberComments(HttpServletRequest request) {
-    String numberCommentsString = request.getParameter("number-comments");
-    int numberComments = 0;
+  public class Comment {
+    private String name;
+    private String text;
+    private String id;
+
+    public Comment(String name, String text, String id) {
+      this.name = name;
+      this.text = text;
+      this.id = id;
+    }
+    public String getName(){
+      return this.name;
+    }
+    public String getText(){
+      return this.text;
+    }
+    public String getId(){
+      return this.id;
+    }
+  }
+
+  private int getRequestedCommentCount(HttpServletRequest request) {
+    String numberOfCommentsString = request.getParameter("number-comments");
+    int commentCount = 0;
     try {
-      numberComments = Integer.parseInt(numberCommentsString);
+      commentCount = Integer.parseInt(numberOfCommentsString);
     } catch (NumberFormatException e) {
-      System.err.println("Could not convert to int: " + numberCommentsString);
+      System.err.println("Could not convert to int: " + numberOfCommentsString);
       return -1;
     }
-    return numberComments;
+    return commentCount;
+  }
+
+  public int getIdNum() {
+    int idNum = 0;
+    Query query = new Query("Comment").addSort("timestamp", SortDirection.DESCENDING);
+    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+    PreparedQuery results = datastore.prepare(query);
+    for (Entity entity : results.asIterable()) {
+      String idString = (String) entity.getProperty("id");
+      int id = Integer.parseInt(idString);
+      if (id > idNum) {
+        idNum = id;
+      }
+    }
+    idNum++;
+    return idNum;
   }
 
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    int idNum = getIdNum();
     String userComment = request.getParameter("comment");
     String userName = request.getParameter("name");
     long timestamp = System.currentTimeMillis();
 
-    String id = userName + userComment;
+    String id = Integer.toString(idNum);
 
     Entity commentEntity = new Entity("Comment");
     commentEntity.setProperty("name", userName);
