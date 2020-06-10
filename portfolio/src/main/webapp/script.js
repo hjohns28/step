@@ -28,7 +28,7 @@ function addRandomFact() {
   // Pick a random fact.
   const index = Math.floor(Math.random() * facts.length);
   const fact = facts[index].text;
-  const image = imgs[index].imageSrc;
+  const image = facts[index].imageSrc;
   
 
   // Add it to the page.
@@ -175,6 +175,7 @@ function drawChart() {
             document.getElementById('chart-container'));
         chart.draw(data, options);
       });
+}
 
 function createReactionElement(emoji) {
   const reaction = document.createElement('p');
