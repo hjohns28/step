@@ -31,6 +31,7 @@ import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.datastore.Query.SortDirection;
+import javax.servlet.ServletContext;
 
 @WebServlet("/data")
 public class DataServlet extends HttpServlet {
@@ -99,29 +100,22 @@ public class DataServlet extends HttpServlet {
     return commentCount;
   }
 
-  public int getIdNum() {
-    int idNum = 0;
-    Query query = new Query("Comment").addSort("timestamp", SortDirection.DESCENDING);
-    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-    PreparedQuery results = datastore.prepare(query);
-    for (Entity entity : results.asIterable()) {
-      String idString = (String) entity.getProperty("id");
-      int id = Integer.parseInt(idString);
-      if (id > idNum) {
-        idNum = id;
-      }
-    }
-    idNum++;
-    return idNum;
-  }
+  private int idNum = -1;
 
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    int idNum = getIdNum();
+
     String userComment = request.getParameter("comment");
     String userName = request.getParameter("name");
     long timestamp = System.currentTimeMillis();
 
+    if (idNum == -1) {
+      ServletContext sc = request.getServletContext();
+	  String id = sc.getAttribute("id").toString();
+      idNum = Integer.parseInt(id);
+    }
+    
+    idNum++;
     String id = Integer.toString(idNum);
 
     Entity commentEntity = new Entity("Comment");
