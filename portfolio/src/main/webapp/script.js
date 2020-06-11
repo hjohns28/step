@@ -117,7 +117,7 @@ function populateComments(commentSection) {
 
 function createComment(element) {
   const liComment = document.createElement('li');
-  liComment.innerText = element.name + ": " + element.text;
+  liComment.innerText = element.nickname + ": " + element.text;
   liComment.className = "commentli";
   liComment.id = element.id;
   
@@ -199,5 +199,6 @@ function isUserLoggedIn() {
         document.getElementById('logout').style.display = "none";
         document.getElementById('login').style.display = "block";
       }
+      getCommentCountAndComments();
   }); 
 }

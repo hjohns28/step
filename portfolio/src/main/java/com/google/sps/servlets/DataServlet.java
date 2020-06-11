@@ -31,6 +31,8 @@ import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.datastore.Query.SortDirection;
+import com.google.appengine.api.users.UserService;
+import com.google.appengine.api.users.UserServiceFactory;
 
 @WebServlet("/data")
 public class DataServlet extends HttpServlet {
@@ -52,11 +54,13 @@ public class DataServlet extends HttpServlet {
         break;
       }
       readCommentCount++;
-      String name = (String) entity.getProperty("name");
+
+      String nickname = (String) entity.getProperty("nickname");
+      String email = (String) entity.getProperty("email");
       String text = (String) entity.getProperty("text");
       String id = (String) entity.getProperty("id");
-      commentSection.add(new Comment(name, text, id));
 
+      commentSection.add(new Comment(nickname, email, text, id));
     }
     
     Gson gson = new Gson();
@@ -67,17 +71,22 @@ public class DataServlet extends HttpServlet {
   }
 
   public class Comment {
-    private String name;
+    private String nickname;
+    private String email;
     private String text;
     private String id;
 
-    public Comment(String name, String text, String id) {
-      this.name = name;
+    public Comment(String nickname, String email, String text, String id) {
+      this.nickname = nickname;
+      this.email = email;
       this.text = text;
       this.id = id;
     }
-    public String getName(){
-      return this.name;
+    public String getNickname(){
+      return this.nickname;
+    }
+    public String getEmail(){
+      return this.email;
     }
     public String getText(){
       return this.text;
@@ -117,22 +126,48 @@ public class DataServlet extends HttpServlet {
 
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    
+    UserService userService = UserServiceFactory.getUserService();
+    String email = userService.getCurrentUser().getEmail();
+    String nickname = getUserNickname(userService.getCurrentUser().getUserId());
+    
+    if (nickname == null) {
+      String url = "/nickname.html";
+      response.sendRedirect(url);
+      return;
+    }
+
     int idNum = getIdNum();
     String userComment = request.getParameter("comment");
-    String userName = request.getParameter("name");
     long timestamp = System.currentTimeMillis();
 
     String id = Integer.toString(idNum);
 
     Entity commentEntity = new Entity("Comment");
-    commentEntity.setProperty("name", userName);
+    commentEntity.setProperty("nickname", nickname);
     commentEntity.setProperty("text", userComment);
     commentEntity.setProperty("timestamp", timestamp);
     commentEntity.setProperty("id", id);
+    commentEntity.setProperty("email", email);
 
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     datastore.put(commentEntity);
 
     response.sendRedirect("/index.html");
+  }
+
+  /** Returns the nickname of the user with id, or null if the user has not set a nickname. */
+  private String getUserNickname(String id) {
+    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+    Query query =
+        new Query("UserInfo")
+            .setFilter(new Query.FilterPredicate("id", Query.FilterOperator.EQUAL, id));
+    PreparedQuery results = datastore.prepare(query);
+    Entity entity = results.asSingleEntity();
+    if (entity == null) {
+      return null;
+    }
+    String nickname = (String) entity.getProperty("nickname");
+    return nickname;
   }
 }
