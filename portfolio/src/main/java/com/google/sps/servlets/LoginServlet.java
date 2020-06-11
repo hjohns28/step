@@ -31,7 +31,7 @@ public class LoginServlet extends HttpServlet {
     UserService userService = UserServiceFactory.getUserService();
     boolean loggedIn = userService.isUserLoggedIn();
 
-    response.setContentType("text");
+    response.setContentType("text/plain");
     response.getWriter().println(Boolean.toString(loggedIn));
 
   }
