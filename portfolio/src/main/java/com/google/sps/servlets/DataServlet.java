@@ -82,15 +82,19 @@ public class DataServlet extends HttpServlet {
       this.text = text;
       this.id = id;
     }
+
     public String getNickname(){
       return this.nickname;
     }
+
     public String getEmail(){
       return this.email;
     }
+
     public String getText(){
       return this.text;
     }
+
     public String getId(){
       return this.id;
     }
@@ -126,8 +130,13 @@ public class DataServlet extends HttpServlet {
 
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    
+
     UserService userService = UserServiceFactory.getUserService();
+    if (!userService.isUserLoggedIn()) {
+      response.sendRedirect("/index.html");
+      return;
+    }
+    
     String email = userService.getCurrentUser().getEmail();
     String nickname = getUserNickname(userService.getCurrentUser().getUserId());
     
