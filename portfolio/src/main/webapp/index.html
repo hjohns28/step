@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="style.css">
     <script src="script.js"></script>
   </head>
-  <body onload="isUserLoggedIn()">
+  <body onload="displayCommentFormIfLoggedIn()">
     <div id="content">
       <h1>Heidi Johnson's Portfolio</h1>
       <ul class="links" id="nav">
@@ -42,7 +42,7 @@
           </form>   
         </div>
         <form id="login" action="/login" method="POST">
-          <label id="loginLabel">Pleas login to post a comment</label>
+          <label id="loginLabel">Please login to post a comment.</label>
           <br>
           <input type="submit" value="login"/>
           <br>
