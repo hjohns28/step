@@ -28,6 +28,8 @@ import javax.servlet.annotation.WebListener;
 @WebListener
 public class IdListener implements ServletContextListener {
 
+  static final String NEXT_AVAILABLE_ID_ATTRIBUTE = "nextAvailableCommentId";
+
   @Override
   public void contextInitialized(ServletContextEvent sce) {
     
@@ -45,16 +47,15 @@ public class IdListener implements ServletContextListener {
         idNum = id;
       }
     }
-
+    
     String id = Integer.toString(idNum);
-    sc.setAttribute("id", id);
-
+    sc.setAttribute(NEXT_AVAILABLE_ID_ATTRIBUTE, id);
   }
 
   @Override
 	public void contextDestroyed(ServletContextEvent sce) {
-		ServletContext sc = sce.getServletContext();
-		sc.removeAttribute("id");
+	  ServletContext sc = sce.getServletContext();
+	  sc.removeAttribute(NEXT_AVAILABLE_ID_ATTRIBUTE);
 	}
 }
 

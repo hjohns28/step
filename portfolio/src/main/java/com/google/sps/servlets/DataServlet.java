@@ -100,23 +100,22 @@ public class DataServlet extends HttpServlet {
     return commentCount;
   }
 
-  private int idNum = -1;
-
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
+    final String NEXT_AVAILABLE_ID_ATTRIBUTE = "nextAvailableCommentId";
     String userComment = request.getParameter("comment");
     String userName = request.getParameter("name");
     long timestamp = System.currentTimeMillis();
-
-    if (idNum == -1) {
-      ServletContext sc = request.getServletContext();
-	  String id = sc.getAttribute("id").toString();
-      idNum = Integer.parseInt(id);
-    }
+   
+    ServletContext sc = request.getServletContext();
+	String id = sc.getAttribute(NEXT_AVAILABLE_ID_ATTRIBUTE).toString();
     
+    int idNum = Integer.parseInt(id);
     idNum++;
-    String id = Integer.toString(idNum);
+
+    id = Integer.toString(idNum);
+    sc.setAttribute(NEXT_AVAILABLE_ID_ATTRIBUTE, id);
 
     Entity commentEntity = new Entity("Comment");
     commentEntity.setProperty("name", userName);
