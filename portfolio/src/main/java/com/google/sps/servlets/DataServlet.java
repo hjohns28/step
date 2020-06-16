@@ -31,8 +31,7 @@ import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.datastore.Query.SortDirection;
-import com.google.appengine.api.users.UserService;
-import com.google.appengine.api.users.UserServiceFactory;
+import javax.servlet.ServletContext;
 
 @WebServlet("/data")
 public class DataServlet extends HttpServlet {
@@ -112,45 +111,21 @@ public class DataServlet extends HttpServlet {
     return commentCount;
   }
 
-  public int getIdNum() {
-    int idNum = 0;
-    Query query = new Query("Comment").addSort("timestamp", SortDirection.DESCENDING);
-    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-    PreparedQuery results = datastore.prepare(query);
-    for (Entity entity : results.asIterable()) {
-      String idString = (String) entity.getProperty("id");
-      int id = Integer.parseInt(idString);
-      if (id > idNum) {
-        idNum = id;
-      }
-    }
-    idNum++;
-    return idNum;
-  }
-
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
-    UserService userService = UserServiceFactory.getUserService();
-    if (!userService.isUserLoggedIn()) {
-      response.sendRedirect("/index.html");
-      return;
-    }
-    
-    String email = userService.getCurrentUser().getEmail();
-    String nickname = getUserNickname(userService.getCurrentUser().getUserId());
-    
-    if (nickname == null) {
-      String url = "/nickname.html";
-      response.sendRedirect(url);
-      return;
-    }
-
-    int idNum = getIdNum();
+    final String NEXT_AVAILABLE_ID_ATTRIBUTE = "nextAvailableCommentId";
     String userComment = request.getParameter("comment");
     long timestamp = System.currentTimeMillis();
+   
+    ServletContext sc = request.getServletContext();
+	  String id = sc.getAttribute(NEXT_AVAILABLE_ID_ATTRIBUTE).toString();
+    
+    int idNum = Integer.parseInt(id);
+    idNum++;
 
-    String id = Integer.toString(idNum);
+    id = Integer.toString(idNum);
+    sc.setAttribute(NEXT_AVAILABLE_ID_ATTRIBUTE, id);
 
     Entity commentEntity = new Entity("Comment");
     commentEntity.setProperty("nickname", nickname);

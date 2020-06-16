@@ -48,13 +48,14 @@ public class DeleteServlet extends HttpServlet {
       }
     } else {
       Filter idFilter =
-        new FilterPredicate("id", FilterOperator.EQUAL, commentId);
+          new FilterPredicate("id", FilterOperator.EQUAL, commentId);
       Query query = new Query("Comment").setFilter(idFilter);
+      
       DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
       PreparedQuery results = datastore.prepare(query);
-      for(Entity entity : results.asIterable()) {
-        datastore.delete(entity.getKey());
-      }
+      
+      Entity entity = results.asSingleEntity();
+      datastore.delete(entity.getKey());
     }
 
     response.setContentType("text/plain");
