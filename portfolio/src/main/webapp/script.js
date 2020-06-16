@@ -117,7 +117,7 @@ function populateComments(commentSection) {
 
 function createComment(element) {
   const liComment = document.createElement('li');
-  liComment.innerText = element.name + ": " + element.text;
+  liComment.innerText = element.nickname + ": " + element.text;
   liComment.className = "commentli";
   liComment.id = element.id;
   
@@ -217,4 +217,19 @@ function createReactionDropDown(){
 function deleteComments(id, deleteAll) {
   number = 0;
   fetch('/delete-data?comment-id='+id+'&delete-all='+deleteAll.toString(), {method: 'POST'}).then(getCommentCountAndComments());
+}
+
+function displayCommentFormIfLoggedIn() {
+  fetch('/login').then(response => response.text()).then(loggedIn => {
+      if (loggedIn.trim() === 'true') {
+        document.getElementById('newcomment').style.display = "block";
+        document.getElementById('logout').style.display = "block";
+        document.getElementById('login').style.display = "none";
+      } else {
+        document.getElementById('newcomment').style.display = "none";
+        document.getElementById('logout').style.display = "none";
+        document.getElementById('login').style.display = "block";
+      }
+      getCommentCountAndComments();
+  }); 
 }
