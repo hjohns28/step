@@ -32,6 +32,8 @@ import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.datastore.Query.SortDirection;
 import javax.servlet.ServletContext;
+import com.google.appengine.api.users.UserService;
+import com.google.appengine.api.users.UserServiceFactory;
 
 @WebServlet("/data")
 public class DataServlet extends HttpServlet {
@@ -114,12 +116,27 @@ public class DataServlet extends HttpServlet {
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
+    UserService userService = UserServiceFactory.getUserService();
+    if (!userService.isUserLoggedIn()) {
+      response.sendRedirect("/index.html");
+      return;
+    }
+
+    String email = userService.getCurrentUser().getEmail();
+    String nickname = getUserNickname(userService.getCurrentUser().getUserId());
+
+    if (nickname == null) {
+      String url = "/nickname.html";
+      response.sendRedirect(url);
+      return;
+    }
+    
     final String NEXT_AVAILABLE_ID_ATTRIBUTE = "nextAvailableCommentId";
     String userComment = request.getParameter("comment");
     long timestamp = System.currentTimeMillis();
    
     ServletContext sc = request.getServletContext();
-	  String id = sc.getAttribute(NEXT_AVAILABLE_ID_ATTRIBUTE).toString();
+    String id = sc.getAttribute(NEXT_AVAILABLE_ID_ATTRIBUTE).toString();
     
     int idNum = Integer.parseInt(id);
     idNum++;
