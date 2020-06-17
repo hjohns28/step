@@ -15,39 +15,31 @@
 package com.google.sps;
 
 import java.util.Collection;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
-import java.util.*; 
+import java.util.ArrayList; 
 import java.util.Comparator;
 import java.util.Collections;
 import java.util.Iterator;
 
 public final class FindMeetingQuery {
+
   public Collection<TimeRange> query(Collection<Event> events, MeetingRequest request) {
-    
     List<TimeRange> mandatoryAttendeeAvailability = new ArrayList<>();
     List<TimeRange> allAttendeeAvailability = new ArrayList<>();
 
-    //if the meeting is scheduled for longer than a day, it cannot be scheduled
     if (request.getDuration() > 24*60) {
+      //if requested meeting is longer than a day, it cannot be scheduled
       return allAttendeeAvailability;
-    } 
-
-    //if no attendees or no meetings, any time of day works
-    else if ((request.getAttendees().size() == 0 && request.getOptionalAttendees().size() == 0) || events.size() == 0) {
+    } else if ((request.getAttendees().size() == 0 && request.getOptionalAttendees().size() == 0) || events.size() == 0) {
+      //if no attendees or no meetings, any time of day works
       allAttendeeAvailability.add(TimeRange.WHOLE_DAY);
       return allAttendeeAvailability;
-    } 
-
-    //otherwise, find all possible meeting times   
-    else {
-
-      //first find the availability for mandatory attendees only 
+    } else {
+      //otherwise, find all possible meeting times, starting with mandatory attendees only 
       List<TimeRange> mandatoryAttendeeMeetingTimes = 
           findAndSortConflictingMeetings(events, request, false);
       
-      fixNestedOrOverlappingMeetings(mandatoryAttendeeMeetingTimes);
+      mergeOverlappingMeetings(mandatoryAttendeeMeetingTimes);
       mandatoryAttendeeAvailability = findAvailabilityBetweenMeetings(mandatoryAttendeeMeetingTimes, request);
 
       //if optional attendees, find availability for all attendees and compare to availability for mandatory attendees 
@@ -55,10 +47,10 @@ public final class FindMeetingQuery {
         List<TimeRange> allAttendeeMeetingTimes = 
             findAndSortConflictingMeetings(events, request, true);
 
-        fixNestedOrOverlappingMeetings(allAttendeeMeetingTimes);
+        mergeOverlappingMeetings(allAttendeeMeetingTimes);
         allAttendeeAvailability = findAvailabilityBetweenMeetings(allAttendeeMeetingTimes, request);
 
-        //compare mandatory attendees' availability with optional attendees' availability
+        //compare mandatory attendees' availability with all attendees' availability
         if (allAttendeeAvailability.size() > 0 || request.getAttendees().size() == 0) {
           return allAttendeeAvailability;
         }
@@ -67,7 +59,7 @@ public final class FindMeetingQuery {
     return mandatoryAttendeeAvailability;
   }
 
-  //only keep meetings that have overlapping attendees, and sort by start time 
+  //only track meetings that have overlapping attendees, and sort by start time 
   public List<TimeRange> findAndSortConflictingMeetings(Collection<Event> events, MeetingRequest request, Boolean allAttendees) {
     List<TimeRange> conflictingMeetings = new ArrayList<>();
     
@@ -85,14 +77,13 @@ public final class FindMeetingQuery {
       if (newMeetingAttendees.size() != 0) {
         conflictingMeetings.add(event.getWhen());
       }
-    }
-    
+    }    
     Collections.sort(conflictingMeetings, Comparator.comparingInt(TimeRange::start)); 
     return conflictingMeetings;
   }
 
-  //remove nested and merge overlapping time ranges
-  public void fixNestedOrOverlappingMeetings(List<TimeRange> meetingTimes) {
+  //remove nested time ranges and merge overlapping time ranges
+  public void mergeOverlappingMeetings(List<TimeRange> meetingTimes) {
     int j = 0;
     while (j < meetingTimes.size()-1) {
       TimeRange currentMeetingTime = meetingTimes.get(j);
@@ -101,14 +92,12 @@ public final class FindMeetingQuery {
       if (currentMeetingTime.contains(nextMeetingTime)) {
         meetingTimes.remove(j+1);
         continue;
-      } 
-      else if (currentMeetingTime.overlaps(nextMeetingTime)) {
+      } else if (currentMeetingTime.overlaps(nextMeetingTime)) {
         TimeRange totalMeetingTime = TimeRange.fromStartEnd(currentMeetingTime.start(), nextMeetingTime.end(), false);
         meetingTimes.set(j, totalMeetingTime);
         meetingTimes.remove(j+1);
         continue;
-      } 
-      else {
+      } else {
         j++;
       }
     }
@@ -120,8 +109,7 @@ public final class FindMeetingQuery {
 
     if (meetingTimes.size() == 0) {
       availability.add(TimeRange.WHOLE_DAY);
-    }
-    else {
+    } else {
       //time before first meeting
       TimeRange firstAvailableTime = TimeRange.fromStartEnd(TimeRange.START_OF_DAY, meetingTimes.get(0).start(), false);
       if (firstAvailableTime.duration() >= request.getDuration()) {
