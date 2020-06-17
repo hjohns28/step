@@ -53,9 +53,9 @@ public class IdListener implements ServletContextListener {
   }
 
   @Override
-	public void contextDestroyed(ServletContextEvent sce) {
-	  ServletContext sc = sce.getServletContext();
-	  sc.removeAttribute(NEXT_AVAILABLE_ID_ATTRIBUTE);
-	}
+  public void contextDestroyed(ServletContextEvent sce) {
+    ServletContext sc = sce.getServletContext();
+    sc.removeAttribute(NEXT_AVAILABLE_ID_ATTRIBUTE);
+  }
 }
 
