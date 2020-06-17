@@ -136,7 +136,7 @@ public class DataServlet extends HttpServlet {
     long timestamp = System.currentTimeMillis();
    
     ServletContext sc = request.getServletContext();
-	String id = sc.getAttribute(NEXT_AVAILABLE_ID_ATTRIBUTE).toString();
+    String id = sc.getAttribute(NEXT_AVAILABLE_ID_ATTRIBUTE).toString();
     
     int idNum = Integer.parseInt(id);
     idNum++;
