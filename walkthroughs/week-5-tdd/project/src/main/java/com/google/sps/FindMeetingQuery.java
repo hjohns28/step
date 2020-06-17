@@ -60,17 +60,17 @@ public final class FindMeetingQuery {
   }
 
   //only track meetings that have overlapping attendees, and sort by start time 
-  public List<TimeRange> findAndSortConflictingMeetings(Collection<Event> events, MeetingRequest request, Boolean allAttendees) {
+  private List<TimeRange> findAndSortConflictingMeetings(Collection<Event> events, MeetingRequest request, Boolean allAttendees) {
     List<TimeRange> conflictingMeetings = new ArrayList<>();
     
-    for (Iterator iterator = events.iterator(); iterator.hasNext();) {
+    for (Iterator<Event> iterator = events.iterator(); iterator.hasNext();) {
       List<String> newMeetingAttendees = new ArrayList<>();
       if (allAttendees) {
         newMeetingAttendees.addAll(0, request.getOptionalAttendees());
       }
       newMeetingAttendees.addAll(0, request.getAttendees());
 
-      Event event = (Event) iterator.next();
+      Event event = iterator.next();
       List<String> existingMeetingAttendees = new ArrayList<>(event.getAttendees());
       newMeetingAttendees.retainAll(existingMeetingAttendees); 
       
@@ -83,7 +83,7 @@ public final class FindMeetingQuery {
   }
 
   //remove nested time ranges and merge overlapping time ranges
-  public void mergeOverlappingMeetings(List<TimeRange> meetingTimes) {
+  private void mergeOverlappingMeetings(List<TimeRange> meetingTimes) {
     int j = 0;
     while (j < meetingTimes.size()-1) {
       TimeRange currentMeetingTime = meetingTimes.get(j);
@@ -91,12 +91,10 @@ public final class FindMeetingQuery {
       
       if (currentMeetingTime.contains(nextMeetingTime)) {
         meetingTimes.remove(j+1);
-        continue;
       } else if (currentMeetingTime.overlaps(nextMeetingTime)) {
         TimeRange totalMeetingTime = TimeRange.fromStartEnd(currentMeetingTime.start(), nextMeetingTime.end(), false);
         meetingTimes.set(j, totalMeetingTime);
         meetingTimes.remove(j+1);
-        continue;
       } else {
         j++;
       }
@@ -104,7 +102,7 @@ public final class FindMeetingQuery {
   }
 
   //find the time ranges outside of the meetings 
-  public List<TimeRange> findAvailabilityBetweenMeetings(List<TimeRange> meetingTimes, MeetingRequest request) {
+  private List<TimeRange> findAvailabilityBetweenMeetings(List<TimeRange> meetingTimes, MeetingRequest request) {
     List<TimeRange> availability = new ArrayList<>();
 
     if (meetingTimes.size() == 0) {
