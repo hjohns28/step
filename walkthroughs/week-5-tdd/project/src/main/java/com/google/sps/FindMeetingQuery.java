@@ -53,7 +53,7 @@ public final class FindMeetingQuery {
       //if optional attendees, find availability for all attendees and compare to availability for mandatory attendees 
       if (request.getOptionalAttendees().size() > 0) {
         List<TimeRange> allAttendeeMeetingTimes = 
-          findAndSortConflictingMeetings(events, request, true);
+            findAndSortConflictingMeetings(events, request, true);
 
         fixNestedOrOverlappingMeetings(allAttendeeMeetingTimes);
         allAttendeeAvailability = findAvailabilityBetweenMeetings(allAttendeeMeetingTimes, request);
